@@ -1,0 +1,181 @@
+{
+    "nav": {
+        "players": "Jogadores",
+        "coaches": "Técnicos",
+        "clubs": "Clubes",
+        "agents": "Agentes",
+        "opportunities": "Oportunidades",
+        "news": "Notícias",
+        "admin": "Painel Admin",
+        "login": "Entrar",
+        "register": "Cadastrar"
+    },
+    "hero": {
+        "badge": "A plataforma #1 do handebol",
+        "title1": "Conecte seu",
+        "title2": "talento",
+        "title3": "ao mundo do",
+        "title4": "handebol",
+        "subtitle": "Jogadores, clubes e agentes em uma única plataforma. Encontre oportunidades, faça conexões e impulsione sua carreira no handebol.",
+        "cta": "Criar Perfil Grátis",
+        "howItWorks": "Como Funciona",
+        "stats": {
+            "players": "Jogadores",
+            "clubs": "Clubes",
+            "opportunities": "Oportunidades"
+        }
+    },
+    "profiles": {
+        "badge": "Para Todos os Perfis",
+        "title": "Quem pode fazer parte do",
+        "highlight": "HandZone?",
+        "subtitle": "Uma plataforma completa para todos os envolvidos no universo do handebol.",
+        "player": {
+            "title": "Jogadores",
+            "description": "Crie seu perfil profissional, mostre seu talento e conecte-se com clubes e agentes de todo o mundo.",
+            "feat1": "Perfil completo com estatísticas",
+            "feat2": "Galeria de fotos e vídeos",
+            "feat3": "Visibilidade para recrutadores",
+            "feat4": "Candidatura a oportunidades",
+            "cta": "Ver Jogadores"
+        },
+        "club": {
+            "title": "Clubes",
+            "description": "Apresente seu clube, publique vagas e encontre os talentos perfeitos para fortalecer seu elenco.",
+            "feat1": "Página institucional do clube",
+            "feat2": "Publicação de vagas",
+            "feat3": "Busca avançada de jogadores",
+            "feat4": "Gestão de candidaturas",
+            "cta": "Ver Clubes"
+        },
+        "agent": {
+            "title": "Agentes",
+            "description": "Gerencie seus atletas, publique oportunidades e conecte talentos às melhores equipes.",
+            "feat1": "Portfólio de atletas",
+            "feat2": "Publicação de oportunidades",
+            "feat3": "Comunicação direta",
+            "feat4": "Ferramentas de gestão",
+            "cta": "Ver Agentes"
+        }
+    },
+    "opps": {
+        "badge": "Oportunidades",
+        "title": "Vagas em",
+        "highlight": "Destaque",
+        "subtitle": "As melhores oportunidades do handebol mundial estão aqui. Encontre a vaga perfeita para sua carreira.",
+        "viewAll": "Ver Todas as Vagas",
+        "featured": "Destaque",
+        "daysAgo_one": "Há 1 dia",
+        "daysAgo_other": "Há {{count}} dias",
+        "premiumLock": "Detalhes completos para assinantes",
+        "viewDetails": "Ver Detalhes",
+        "apply": "Candidatar-se",
+        "perksTitle": "Desbloqueie o Acesso",
+        "perksSubtitle": "Tenha acesso completo a todas as vagas, detalhes exclusivos, candidatura direta e comunicação ilimitada com clubes e agentes.",
+        "perksCta": "Conhecer Planos Premium"
+    },
+    "news": {
+        "badge": "Notícias",
+        "title": "Últimas do",
+        "highlight": "Handebol",
+        "subtitle": "Fique por dentro de tudo que acontece no mundo do handebol.",
+        "viewAll": "Ver Todas as Notícias"
+    },
+    "cta": {
+        "title": "Pronto para dar o",
+        "highlight": "próximo passo",
+        "subtitle": "Junte-se a milhares de jogadores, clubes e agentes que já fazem parte da maior comunidade de handebol da América Latina.",
+        "start": "Começar Agora — É Grátis",
+        "viewPlans": "Ver Planos Premium"
+    },
+    "footer": {
+        "description": "A plataforma que conecta talentos do handebol com oportunidades únicas. Jogadores, clubes e agentes em um só lugar.",
+        "sections": {
+            "platform": "Plataforma",
+            "resources": "Recursos",
+            "company": "Empresa"
+        },
+        "links": {
+            "over": "Sobre Nós",
+            "contact": "Contato",
+            "terms": "Termos de Uso",
+            "privacy": "Privacidade",
+            "faq": "FAQ"
+        },
+        "rights": "Todos os direitos reservados."
+    },
+    "listing": {
+        "filters": "Filtros",
+        "clear": "Limpar",
+        "searchPlaceholder": "Buscar...",
+        "found": "{{count}} encontrados",
+        "noResults": "Nenhum resultado encontrado.",
+        "noResultsDesc": "Tente ajustar os filtros ou fazer uma busca diferente.",
+        "viewProfile": "Ver Perfil",
+        "createProfile": "Criar Perfil",
+        "country": "País",
+        "allCountries": "Todos os países",
+        "level": "Nível",
+        "allLevels": "Todos os níveis",
+        "status": "Status",
+        "allStatuses": "Todos os status",
+        "position": "Posição",
+        "allPositions": "Todas as posições",
+        "league": "Liga",
+        "allLeagues": "Todas as ligas",
+        "type": "Tipo",
+        "allTypes": "Todos os tipos",
+        "athletes": "Atletas",
+        "experience": "Experiência",
+        "founded": "Fundado em",
+        "searchPlayersPlaceholder": "Buscar jogadores...",
+        "searchCoachesPlaceholder": "Buscar técnicos...",
+        "searchClubsPlaceholder": "Buscar clubes...",
+        "searchAgentsPlaceholder": "Buscar agentes...",
+        "searchOppsPlaceholder": "Buscar oportunidades..."
+    },
+    "auth": {
+        "login": "Entrar",
+        "register": "Cadastrar",
+        "email": "E-mail",
+        "password": "Senha",
+        "forgotPassword": "Esqueceu a senha?",
+        "noAccount": "Não tem uma conta?",
+        "hasAccount": "Já tem uma conta?",
+        "welcome": "Bem-vindo de volta!",
+        "loginSubtitle": "Entre na sua conta para continuar",
+        "registerTitle": "Crie sua conta no HandZone",
+        "registerStep1": "Escolha o tipo de perfil",
+        "registerStep2": "Preencha seus dados",
+        "registerStep3": "Complete seu perfil",
+        "stepType": "Tipo",
+        "stepAccount": "Conta",
+        "stepProfile": "Perfil",
+        "loginSuccess": "Login realizado com sucesso!",
+        "registerSuccess": "Perfil criado com sucesso!"
+    },
+    "premium": {
+        "title": "Escolha o plano ideal para sua",
+        "highlight": "carreira",
+        "subtitle": "Invista no seu futuro no handebol. Acesse recursos exclusivos e conecte-se com as melhores oportunidades.",
+        "status": "Você é um usuário Premium!",
+        "statusDesc": "Aproveite todos os benefícios exclusivos da plataforma.",
+        "badge": "Desbloqueie todo o potencial",
+        "plans": {
+            "free": "Gratuito",
+            "athlete": "Atleta / Técnico",
+            "pro": "Clube / Agente",
+            "forever": "para sempre",
+            "month": "/mês",
+            "popular": "Mais Popular",
+            "current": "Plano Atual",
+            "subscribe": "Assinar Agora",
+            "createFree": "Criar Conta Grátis"
+        },
+        "featuresTitle": "Por que escolher o",
+        "featuresSubtitle": "Recursos exclusivos que fazem a diferença na sua carreira.",
+        "faq": "Ainda tem dúvidas sobre qual plano escolher?",
+        "viewFaq": "Ver Perguntas Frequentes",
+        "summary": "Resumo dos Valores"
+    }
+}
