@@ -32,7 +32,7 @@ const Cadastro = () => {
   // Player specific data
   const [playerData, setPlayerData] = useState({
     birthDate: "",
-    nationality: "Brasil",
+    nationality: "",
     state: "",
     city: "",
     height: "",
@@ -48,7 +48,7 @@ const Cadastro = () => {
 
   // Club specific data
   const [clubData, setClubData] = useState({
-    country: "Brasil",
+    country: "",
     state: "",
     city: "",
     league: "",
@@ -61,7 +61,7 @@ const Cadastro = () => {
   // Agent specific data
   const [agentData, setAgentData] = useState({
     agency: "",
-    country: "Brasil",
+    country: "",
     state: "",
     city: "",
     description: "",
@@ -70,7 +70,7 @@ const Cadastro = () => {
   // Coach specific data
   const [coachData, setCoachData] = useState({
     birthDate: "",
-    nationality: "Brasil",
+    nationality: "",
     state: "",
     city: "",
     experience: "",
@@ -108,6 +108,23 @@ const Cadastro = () => {
       description: t("profiles.agent.registerDesc", "Sou agente e represento atletas"),
     },
   ];
+
+  // Helper functions to update data - EXACT pattern from CreateOpportunity
+  const updatePlayerData = (field: string, value: string) => {
+    setPlayerData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const updateCoachData = (field: string, value: string) => {
+    setCoachData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const updateClubData = (field: string, value: string) => {
+    setClubData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const updateAgentData = (field: string, value: string) => {
+    setAgentData(prev => ({ ...prev, [field]: value }));
+  };
 
   const addClubHistory = () => {
     if (profileType === "jogador") {
@@ -281,27 +298,26 @@ const Cadastro = () => {
     if (profileType === "jogador") {
       return (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>{t("cadastro.birthDate", "Data de Nascimento")} *</Label>
-              <Input
-                type="date"
-                value={playerData.birthDate}
-                onChange={(e) => setPlayerData({ ...playerData, birthDate: e.target.value })}
-                required
-                className="bg-secondary border-border"
-              />
-            </div>
-            <LocationSelector
-              country={playerData.nationality}
-              state={playerData.state}
-              city={playerData.city}
-              onCountryChange={(v) => setPlayerData({ ...playerData, nationality: v })}
-              onStateChange={(v) => setPlayerData({ ...playerData, state: v })}
-              onCityChange={(v) => setPlayerData({ ...playerData, city: v })}
-              className="mt-4"
+          <div className="space-y-2">
+            <Label>{t("cadastro.birthDate", "Data de Nascimento")} *</Label>
+            <Input
+              type="date"
+              value={playerData.birthDate}
+              onChange={(e) => setPlayerData({ ...playerData, birthDate: e.target.value })}
+              required
+              className="bg-secondary border-border"
             />
           </div>
+
+          <LocationSelector
+            country={playerData.nationality}
+            state={playerData.state}
+            city={playerData.city}
+            onCountryChange={(v) => updatePlayerData("nationality", v)}
+            onStateChange={(v) => updatePlayerData("state", v)}
+            onCityChange={(v) => updatePlayerData("city", v)}
+            countryLabel="Nacionalidade"
+          />
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -459,27 +475,26 @@ const Cadastro = () => {
     if (profileType === "tecnico") {
       return (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Data de Nascimento *</Label>
-              <Input
-                type="date"
-                value={coachData.birthDate}
-                onChange={(e) => setCoachData({ ...coachData, birthDate: e.target.value })}
-                required
-                className="bg-secondary border-border"
-              />
-            </div>
-            <LocationSelector
-              country={coachData.nationality}
-              state={coachData.state}
-              city={coachData.city}
-              onCountryChange={(v) => setCoachData({ ...coachData, nationality: v })}
-              onStateChange={(v) => setCoachData({ ...coachData, state: v })}
-              onCityChange={(v) => setCoachData({ ...coachData, city: v })}
-              className="mt-4"
+          <div className="space-y-2">
+            <Label>Data de Nascimento *</Label>
+            <Input
+              type="date"
+              value={coachData.birthDate}
+              onChange={(e) => setCoachData({ ...coachData, birthDate: e.target.value })}
+              required
+              className="bg-secondary border-border"
             />
           </div>
+
+          <LocationSelector
+            country={coachData.nationality}
+            state={coachData.state}
+            city={coachData.city}
+            onCountryChange={(v) => updateCoachData("nationality", v)}
+            onStateChange={(v) => updateCoachData("state", v)}
+            onCityChange={(v) => updateCoachData("city", v)}
+            countryLabel="Nacionalidade"
+          />
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -622,17 +637,14 @@ const Cadastro = () => {
     if (profileType === "clube") {
       return (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <LocationSelector
-              country={clubData.country}
-              state={clubData.state}
-              city={clubData.city}
-              onCountryChange={(v) => setClubData({ ...clubData, country: v })}
-              onStateChange={(v) => setClubData({ ...clubData, state: v })}
-              onCityChange={(v) => setClubData({ ...clubData, city: v })}
-              className="mt-4"
-            />
-          </div>
+          <LocationSelector
+            country={clubData.country}
+            state={clubData.state}
+            city={clubData.city}
+            onCountryChange={(v) => updateClubData("country", v)}
+            onStateChange={(v) => updateClubData("state", v)}
+            onCityChange={(v) => updateClubData("city", v)}
+          />
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -680,26 +692,24 @@ const Cadastro = () => {
     if (profileType === "agente") {
       return (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>{t("cadastro.agencyLabel", "Agência (opcional)")}</Label>
-              <Input
-                value={agentData.agency}
-                onChange={(e) => setAgentData({ ...agentData, agency: e.target.value })}
-                placeholder={t("cadastro.agencyPlaceholder", "Nome da agência")}
-                className="bg-secondary border-border"
-              />
-            </div>
-            <LocationSelector
-              country={agentData.country}
-              state={agentData.state}
-              city={agentData.city}
-              onCountryChange={(v) => setAgentData({ ...agentData, country: v })}
-              onStateChange={(v) => setAgentData({ ...agentData, state: v })}
-              onCityChange={(v) => setAgentData({ ...agentData, city: v })}
-              className="mt-4 col-span-2"
+          <div className="space-y-2">
+            <Label>{t("cadastro.agencyLabel", "Agência (opcional)")}</Label>
+            <Input
+              value={agentData.agency}
+              onChange={(e) => setAgentData({ ...agentData, agency: e.target.value })}
+              placeholder={t("cadastro.agencyPlaceholder", "Nome da agência")}
+              className="bg-secondary border-border"
             />
           </div>
+
+          <LocationSelector
+            country={agentData.country}
+            state={agentData.state}
+            city={agentData.city}
+            onCountryChange={(v) => updateAgentData("country", v)}
+            onStateChange={(v) => updateAgentData("state", v)}
+            onCityChange={(v) => updateAgentData("city", v)}
+          />
 
           <div className="space-y-2">
             <Label>{t("cadastro.agentAbout", "Sobre você e sua atuação")}</Label>

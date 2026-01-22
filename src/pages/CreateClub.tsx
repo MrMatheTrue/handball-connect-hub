@@ -9,8 +9,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { getClubs, saveClubs, COUNTRIES, Club } from "@/data/mockData";
-import { Upload, Image, Plus, X, Building2, Save } from "lucide-react";
+import { Upload, Image, Plus, X, Building2, Save, Eye, EyeOff } from "lucide-react";
 import LocationSelector from "@/components/common/LocationSelector";
+import { useUser } from "@/contexts/UserContext";
 
 const LEAGUES = [
   "Liga Nacional",
@@ -24,12 +25,14 @@ const LEAGUES = [
 const CreateClub = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useUser();
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [photos, setPhotos] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    password: "",
     country: "",
     state: "",
     city: "",
@@ -40,6 +43,7 @@ const CreateClub = () => {
     description: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -90,6 +94,8 @@ const CreateClub = () => {
 
     if (!formData.name.trim()) newErrors.name = "Nome é obrigatório";
     if (!formData.email.trim()) newErrors.email = "Email é obrigatório";
+    if (!formData.password) newErrors.password = "Senha é obrigatória";
+    if (formData.password.length < 6) newErrors.password = "A senha deve ter pelo menos 6 caracteres";
     if (!formData.country) newErrors.country = "País é obrigatório";
     if (!formData.league) newErrors.league = "Liga é obrigatória";
 
@@ -109,8 +115,11 @@ const CreateClub = () => {
       return;
     }
 
+    const userId = `user-${Date.now()}`;
+    const profileId = `club-${Date.now()}`;
+
     const newClub: Club = {
-      id: `club-${Date.now()}`,
+      id: profileId,
       name: formData.name,
       email: formData.email,
       country: formData.country,
@@ -124,6 +133,7 @@ const CreateClub = () => {
       logoUrl: logoPreview || undefined,
       photos: photos,
       createdAt: new Date().toISOString().split("T")[0],
+      userId,
     };
 
     const clubs = getClubs();
@@ -135,7 +145,15 @@ const CreateClub = () => {
       description: "O perfil do clube foi criado e está disponível para visualização.",
     });
 
-    navigate(`/clube/${newClub.id}`);
+    login({
+      name: formData.name,
+      email: formData.email,
+      type: 'club',
+      isPremium: false,
+      profileId,
+    });
+
+    navigate(`/dashboard`);
   };
 
   return (
@@ -220,6 +238,29 @@ const CreateClub = () => {
                     className={errors.email ? "border-destructive" : ""}
                   />
                   {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="password">Senha *</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      placeholder="******"
+                      className={`pr-10 ${errors.password ? "border-destructive" : ""}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
                 </div>
 
                 <div className="space-y-2">

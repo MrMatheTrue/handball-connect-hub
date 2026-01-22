@@ -9,12 +9,14 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { getPlayers, savePlayers, POSITIONS, COUNTRIES, LEVELS, STATUSES, Player } from "@/data/mockData";
-import { Upload, Video, Plus, X, User, Save } from "lucide-react";
+import { Upload, Video, Plus, X, User, Save, Lock, Eye, EyeOff } from "lucide-react";
 import LocationSelector from "@/components/common/LocationSelector";
+import { useUser } from "@/contexts/UserContext";
 
 const CreatePlayer = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useUser();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [videoLinks, setVideoLinks] = useState<string[]>([""]);
   const [clubHistory, setClubHistory] = useState<{ club: string; period: string }[]>([{ club: "", period: "" }]);
@@ -22,6 +24,7 @@ const CreatePlayer = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    password: "",
     birthDate: "",
     nationality: "",
     state: "",
@@ -34,6 +37,10 @@ const CreatePlayer = () => {
     status: "",
     description: "",
   });
+
+
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -96,6 +103,8 @@ const CreatePlayer = () => {
 
     if (!formData.name.trim()) newErrors.name = "Nome é obrigatório";
     if (!formData.email.trim()) newErrors.email = "Email é obrigatório";
+    if (!formData.password) newErrors.password = "Senha é obrigatória";
+    if (formData.password.length < 6) newErrors.password = "A senha deve ter pelo menos 6 caracteres";
     if (!formData.birthDate) newErrors.birthDate = "Data de nascimento é obrigatória";
     if (!formData.nationality) newErrors.nationality = "Nacionalidade é obrigatória";
     if (!formData.position) newErrors.position = "Posição é obrigatória";
@@ -118,8 +127,11 @@ const CreatePlayer = () => {
       return;
     }
 
+    const userId = `user-${Date.now()}`;
+    const profileId = `player-${Date.now()}`;
+
     const newPlayer: Player = {
-      id: `player-${Date.now()}`,
+      id: profileId,
       name: formData.name,
       email: formData.email,
       birthDate: formData.birthDate,
@@ -138,6 +150,7 @@ const CreatePlayer = () => {
       videoLinks: videoLinks.filter(v => v.trim()),
       createdAt: new Date().toISOString().split("T")[0],
       isPremiumProfile: false,
+      userId,
     };
 
     const players = getPlayers();
@@ -149,7 +162,15 @@ const CreatePlayer = () => {
       description: "Seu perfil de jogador foi criado e está disponível para visualização.",
     });
 
-    navigate(`/jogador/${newPlayer.id}`);
+    login({
+      name: formData.name,
+      email: formData.email,
+      type: 'player',
+      isPremium: false,
+      profileId,
+    });
+
+    navigate(`/dashboard`);
   };
 
   return (
@@ -234,6 +255,29 @@ const CreatePlayer = () => {
                     className={errors.email ? "border-destructive" : ""}
                   />
                   {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="password">Senha *</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      placeholder="******"
+                      className={`pr-10 ${errors.password ? "border-destructive" : ""}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
                 </div>
 
                 <div className="space-y-2">

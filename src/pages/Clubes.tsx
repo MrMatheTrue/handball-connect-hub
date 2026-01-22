@@ -80,12 +80,6 @@ const Clubes = () => {
                 {t("listing.clubsSubtitle", "Explore clubes de handebol de todo o mundo. Encontre equipes buscando novos talentos.")}
               </p>
             </div>
-            <Link to="/criar-clube">
-              <Button variant="hero" className="gap-2">
-                <Plus className="w-4 h-4" />
-                {t("listing.createProfile", "Cadastrar Clube")}
-              </Button>
-            </Link>
           </div>
 
           {/* Search and Filters */}

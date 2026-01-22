@@ -140,9 +140,9 @@ export interface Conversation {
 // Premium Pricing
 export const PREMIUM_PRICING = {
   player: { price: 10, label: 'R$ 10,00/mês' },
-  coach: { price: 10, label: 'R$ 10,00/mês' },
-  club: { price: 50, label: 'R$ 50,00/mês' },
-  agent: { price: 50, label: 'R$ 50,00/mês' },
+  coach: { price: 38.99, label: 'R$ 38,99/mês' },
+  club: { price: 38.99, label: 'R$ 38,99/mês' },
+  agent: { price: 38.99, label: 'R$ 38,99/mês' },
 };
 
 // Initial Mock Data

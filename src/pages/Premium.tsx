@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { useTranslation } from "react-i18next";
 const Premium = () => {
   const { t } = useTranslation();
   const { isPremium, userType, togglePremium } = useUser();
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
 
   const plans = [
     {
@@ -34,8 +36,8 @@ const Premium = () => {
     },
     {
       name: t("premium.plans.athlete"),
-      price: "R$ 10",
-      period: t("premium.plans.month"),
+      price: billingCycle === "annual" ? "R$ 10,00" : "R$ 28,99",
+      period: billingCycle === "annual" ? "/mês (anual)" : "/mês",
       description: t("premium.plans.athleteDesc", "Tudo que você precisa para alavancar sua carreira"),
       icon: User,
       features: [
@@ -48,15 +50,15 @@ const Premium = () => {
         t("premium.features.viewStats", "Estatísticas de visualizações"),
       ],
       limitations: [],
-      cta: isPremium && (userType === 'player' || userType === 'coach') ? t("premium.plans.current") : t("premium.plans.subscribe"),
+      cta: isPremium && (userType === 'player') ? t("premium.plans.current") : t("premium.plans.subscribe"),
       href: "/cadastro?plan=premium-athlete",
       popular: true,
     },
     {
-      name: t("premium.plans.pro"),
-      price: "R$ 50",
-      period: t("premium.plans.month"),
-      description: t("premium.plans.proDesc", "Para clubes e agentes que buscam talentos"),
+      name: "Técnico / Clube / Agente",
+      price: billingCycle === "annual" ? "R$ 38,99" : "R$ 50,00",
+      period: billingCycle === "annual" ? "/mês (anual)" : "/mês",
+      description: "Para profissionais, clubes e agentes que buscam o próximo nível",
       icon: Building2,
       features: [
         t("premium.features.everythingAthlete", "Tudo do Premium Atleta"),
@@ -68,7 +70,7 @@ const Premium = () => {
         t("premium.features.directContact", "Contato direto com atletas"),
       ],
       limitations: [],
-      cta: isPremium && (userType === 'club' || userType === 'agent') ? t("premium.plans.current") : t("premium.plans.subscribe"),
+      cta: isPremium && (userType === 'club' || userType === 'agent' || userType === 'coach') ? t("premium.plans.current") : t("premium.plans.subscribe"),
       href: "/cadastro?plan=premium-pro",
       popular: false,
     },
@@ -97,7 +99,7 @@ const Premium = () => {
     },
   ];
 
-  const handleSubscribe = (planType: string) => {
+  const handleSubscribe = (planName: string) => {
     if (!isPremium) {
       togglePremium();
     }
@@ -130,9 +132,21 @@ const Premium = () => {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
               {t("premium.title")} <span className="gradient-text">{t("premium.highlight")}</span>
             </h1>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-lg mb-8">
               {t("premium.subtitle")}
             </p>
+
+            {/* Billing Toggle */}
+            <div className="flex items-center justify-center gap-4 mt-8">
+              <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-foreground' : 'text-muted-foreground'}`}>Mensal</span>
+              <button
+                onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly')}
+                className="relative w-14 h-7 bg-secondary rounded-full p-1 transition-colors hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-primary/50"
+              >
+                <div className={`absolute top-1 left-1 w-5 h-5 bg-primary rounded-full transition-transform ${billingCycle === 'annual' ? 'translate-x-7' : ''}`} />
+              </button>
+              <span className={`text-sm font-medium ${billingCycle === 'annual' ? 'text-foreground' : 'text-muted-foreground'}`}>Anual (Economia)</span>
+            </div>
           </div>
 
           {/* Pricing Cards */}
@@ -140,12 +154,12 @@ const Premium = () => {
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className={`relative glass-card rounded-2xl p-8 ${plan.popular ? "border-2 border-primary glow-orange" : "border border-border"
+                className={`relative glass-card rounded-2xl p-8 flex flex-col ${plan.popular ? "border-2 border-primary glow-orange" : "border border-border"
                   }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <span className="px-4 py-1.5 rounded-full premium-badge text-sm font-semibold">
+                    <span className="px-4 py-1.5 rounded-full premium-badge text-sm font-semibold whitespace-nowrap">
                       {t("premium.plans.popular")}
                     </span>
                   </div>
@@ -156,38 +170,43 @@ const Premium = () => {
                     {plan.icon && <plan.icon className="w-5 h-5 text-primary" />}
                     <h3 className="text-xl font-bold text-foreground">{plan.name}</h3>
                   </div>
-                  <p className="text-muted-foreground text-sm">{plan.description}</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{plan.description}</p>
                 </div>
 
-                <div className="mb-6">
-                  <span className="text-4xl font-bold text-foreground">{plan.price}</span>
-                  <span className="text-muted-foreground">{plan.period}</span>
+                <div className="mb-8">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold text-foreground tracking-tight">{plan.price}</span>
+                    <span className="text-muted-foreground text-sm">{plan.period}</span>
+                  </div>
+                  {billingCycle === "annual" && plan.name !== t("premium.plans.free") && (
+                    <p className="text-xs text-primary font-medium mt-1">12 parcelas sem juros</p>
+                  )}
                 </div>
 
-                <ul className="space-y-3 mb-6">
+                <ul className="space-y-4 mb-8 flex-1">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-foreground">
                       <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      {feature}
+                      <span>{feature}</span>
                     </li>
                   ))}
                   {plan.limitations.map((limitation, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground line-through">
+                    <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground line-through decoration-muted-foreground/50">
                       <Check className="w-5 h-5 text-muted-foreground/30 flex-shrink-0 mt-0.5" />
-                      {limitation}
+                      <span>{limitation}</span>
                     </li>
                   ))}
                 </ul>
 
                 {plan.cta === t("premium.plans.current") ? (
-                  <Button variant="glass" className="w-full" size="lg" disabled>
+                  <Button variant="glass" className="w-full mt-auto" size="lg" disabled>
                     <Crown className="w-4 h-4 mr-2" />
                     {plan.cta}
                   </Button>
                 ) : (
                   <Button
                     variant={plan.popular ? "hero" : "glass"}
-                    className="w-full"
+                    className="w-full mt-auto"
                     size="lg"
                     onClick={() => handleSubscribe(plan.name)}
                   >
@@ -198,60 +217,61 @@ const Premium = () => {
             ))}
           </div>
 
-          {/* Price Summary */}
-          <div className="glass-card rounded-2xl p-8 mb-16">
-            <h2 className="text-2xl font-bold text-center mb-8">{t("premium.summary")}</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="text-center p-6 rounded-xl bg-secondary/50">
+          {/* Pricing Summary */}
+          <div className="glass-card rounded-2xl p-8 mb-16 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+            <h2 className="text-2xl font-bold text-center mb-10 relative z-10">{t("premium.summary")}</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+              <div className="text-center p-6 rounded-xl bg-secondary/30 border border-border/50 card-hover">
                 <User className="w-10 h-10 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-1">{t("profiles.player.title")}</h3>
-                <p className="text-2xl font-bold text-primary">R$ 10,00</p>
-                <p className="text-sm text-muted-foreground">{t("premium.plans.month")}</p>
+                <h3 className="font-semibold mb-2">{t("profiles.player.title")}</h3>
+                <p className="text-2xl font-bold text-primary">{billingCycle === 'monthly' ? 'R$ 28,99' : 'R$ 10,00'}</p>
+                <p className="text-xs text-muted-foreground mt-1">/{t("premium.plans.month")}</p>
               </div>
-              <div className="text-center p-6 rounded-xl bg-secondary/50">
+              <div className="text-center p-6 rounded-xl bg-secondary/30 border border-border/50 card-hover ring-1 ring-primary/20">
                 <GraduationCap className="w-10 h-10 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-1">{t("nav.coaches")}</h3>
-                <p className="text-2xl font-bold text-primary">R$ 10,00</p>
-                <p className="text-sm text-muted-foreground">{t("premium.plans.month")}</p>
+                <h3 className="font-semibold mb-2">{t("nav.coaches")}</h3>
+                <p className="text-2xl font-bold text-primary">{billingCycle === 'monthly' ? 'R$ 50,00' : 'R$ 38,99'}</p>
+                <p className="text-xs text-muted-foreground mt-1">/{t("premium.plans.month")}</p>
               </div>
-              <div className="text-center p-6 rounded-xl bg-secondary/50">
+              <div className="text-center p-6 rounded-xl bg-secondary/30 border border-border/50 card-hover ring-1 ring-primary/20">
                 <Building2 className="w-10 h-10 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-1">{t("profiles.club.title")}</h3>
-                <p className="text-2xl font-bold text-primary">R$ 50,00</p>
-                <p className="text-sm text-muted-foreground">{t("premium.plans.month")}</p>
+                <h3 className="font-semibold mb-2">{t("profiles.club.title")}</h3>
+                <p className="text-2xl font-bold text-primary">{billingCycle === 'monthly' ? 'R$ 50,00' : 'R$ 38,99'}</p>
+                <p className="text-xs text-muted-foreground mt-1">/{t("premium.plans.month")}</p>
               </div>
-              <div className="text-center p-6 rounded-xl bg-secondary/50">
+              <div className="text-center p-6 rounded-xl bg-secondary/30 border border-border/50 card-hover ring-1 ring-primary/20">
                 <Users className="w-10 h-10 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-1">{t("profiles.agent.title")}</h3>
-                <p className="text-2xl font-bold text-primary">R$ 50,00</p>
-                <p className="text-sm text-muted-foreground">{t("premium.plans.month")}</p>
+                <h3 className="font-semibold mb-2">{t("profiles.agent.title")}</h3>
+                <p className="text-2xl font-bold text-primary">{billingCycle === 'monthly' ? 'R$ 50,00' : 'R$ 38,99'}</p>
+                <p className="text-xs text-muted-foreground mt-1">/{t("premium.plans.month")}</p>
               </div>
             </div>
           </div>
 
           {/* Features Section */}
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6">
               {t("premium.featuresTitle")} <span className="gradient-text">Premium</span>?
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-lg">
               {t("premium.featuresSubtitle")}
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="glass-card rounded-2xl p-6 text-center card-hover"
+                className="glass-card rounded-2xl p-8 text-center card-hover border border-border/50"
               >
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-orange-light flex items-center justify-center mx-auto mb-4 shadow-lg glow-orange">
-                  <feature.icon className="w-7 h-7 text-primary-foreground" />
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-orange-light flex items-center justify-center mx-auto mb-6 shadow-xl glow-orange">
+                  <feature.icon className="w-8 h-8 text-primary-foreground" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
+                <h3 className="text-xl font-bold text-foreground mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-sm leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -259,12 +279,12 @@ const Premium = () => {
           </div>
 
           {/* FAQ CTA */}
-          <div className="mt-24 text-center">
-            <p className="text-muted-foreground mb-4">
+          <div className="mt-32 text-center bg-secondary/20 py-12 rounded-3xl border border-border/30">
+            <p className="text-muted-foreground mb-6 text-lg">
               {t("premium.faq")}
             </p>
             <Link to="/faq">
-              <Button variant="glass" size="lg">
+              <Button variant="hero" size="lg" className="px-10">
                 {t("premium.viewFaq")}
               </Button>
             </Link>

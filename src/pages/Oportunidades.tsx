@@ -38,7 +38,7 @@ const Oportunidades = () => {
       const club = getClubDetails(opp.clubId);
       const matchesSearch = !searchQuery ||
         opp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        opp.club.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        opp.clubName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         opp.location.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesPosition = !positionFilter || opp.position === positionFilter;

@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Country, State, City } from "country-state-city";
 
 interface LocationSelectorProps {
-    country: string; // ISO code or Name (internally we'll try to handle both for compatibility)
+    country: string;
     state: string;
     city: string;
     onCountryChange: (value: string) => void;
@@ -28,18 +28,25 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
     cityLabel = "Cidade",
     className = "",
 }) => {
-    // Memoized list of all countries
+    // Get all countries from the global database
     const countries = useMemo(() => Country.getAllCountries(), []);
 
-    // Find the current country object to get its ISO code
+    // Find the current country object by ISO code or name
     const currentCountryObj = useMemo(() => {
         if (!country) return null;
-        return countries.find(c => c.isoCode === country || c.name === country);
+
+        // Try to find by ISO code first
+        let found = countries.find(c => c.isoCode === country);
+        if (found) return found;
+
+        // Try to find by name (case insensitive)
+        found = countries.find(c => c.name.toLowerCase() === country.toLowerCase());
+        return found || null;
     }, [country, countries]);
 
     const countryCode = currentCountryObj?.isoCode || "";
 
-    // Get available states based on selected country
+    // Get states for the selected country
     const availableStates = useMemo(() => {
         if (!countryCode) return [];
         return State.getStatesOfCountry(countryCode);
@@ -48,85 +55,121 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
     // Find the current state object
     const currentStateObj = useMemo(() => {
         if (!state || !countryCode) return null;
-        return availableStates.find(s => s.isoCode === state || s.name === state);
+        return availableStates.find(s =>
+            s.isoCode === state ||
+            s.name.toLowerCase() === state.toLowerCase()
+        );
     }, [state, availableStates, countryCode]);
 
     const stateCode = currentStateObj?.isoCode || "";
 
-    // Get available cities based on selected country and state
+    // Get cities for the selected country and state
     const availableCities = useMemo(() => {
         if (!countryCode || !stateCode) return [];
         return City.getCitiesOfState(countryCode, stateCode);
     }, [countryCode, stateCode]);
 
-    // Update handlers to pass the data we need (Name for the form)
-    const handleCountryChange = (val: string) => {
-        const found = countries.find(c => c.isoCode === val);
-        if (found) {
-            onCountryChange(found.name);
+    // Handle country selection
+    const handleCountryChange = (isoCode: string) => {
+        const selectedCountry = countries.find(c => c.isoCode === isoCode);
+        if (selectedCountry) {
+            onCountryChange(selectedCountry.name);
             onStateChange("");
             onCityChange("");
         }
     };
 
-    const handleStateChange = (val: string) => {
-        const found = availableStates.find(s => s.isoCode === val);
-        if (found) {
-            onStateChange(found.name);
+    // Handle state selection
+    const handleStateChange = (isoCode: string) => {
+        const selectedState = availableStates.find(s => s.isoCode === isoCode);
+        if (selectedState) {
+            onStateChange(selectedState.name);
             onCityChange("");
         }
     };
 
+    // Handle city selection
+    const handleCityChange = (cityName: string) => {
+        onCityChange(cityName);
+    };
+
     return (
-        <div className={`grid sm:grid-cols-3 gap-4 ${className}`}>
-            <div className="space-y-2">
-                <Label>{countryLabel} *</Label>
-                <Select value={countryCode} onValueChange={handleCountryChange}>
-                    <SelectTrigger className="bg-secondary border-border">
-                        <SelectValue placeholder="Selecione o País" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {countries.map((c) => (
-                            <SelectItem key={c.isoCode} value={c.isoCode}>{c.name}</SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </div>
+        <div className={`w-full ${className}`}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Country Select */}
+                <div className="space-y-2">
+                    <Label>{countryLabel} *</Label>
+                    <Select value={countryCode} onValueChange={handleCountryChange}>
+                        <SelectTrigger className="bg-secondary border-border">
+                            <SelectValue placeholder="Selecione o país" />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-[300px]">
+                            {countries.map((c) => (
+                                <SelectItem key={c.isoCode} value={c.isoCode}>
+                                    {c.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
 
-            <div className="space-y-2">
-                <Label>{stateLabel} *</Label>
-                <Select
-                    value={stateCode}
-                    onValueChange={handleStateChange}
-                    disabled={!countryCode || availableStates.length === 0}
-                >
-                    <SelectTrigger className="bg-secondary border-border">
-                        <SelectValue placeholder={!countryCode ? "Aguardando País..." : "Selecione o Estado"} />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {availableStates.map((s) => (
-                            <SelectItem key={s.isoCode} value={s.isoCode}>{s.name}</SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </div>
+                {/* State Select */}
+                <div className="space-y-2">
+                    <Label>{stateLabel} *</Label>
+                    <Select
+                        value={stateCode}
+                        onValueChange={handleStateChange}
+                        disabled={!countryCode || availableStates.length === 0}
+                    >
+                        <SelectTrigger className="bg-secondary border-border disabled:opacity-50 disabled:cursor-not-allowed">
+                            <SelectValue
+                                placeholder={
+                                    !countryCode
+                                        ? "Selecione o país primeiro"
+                                        : availableStates.length === 0
+                                            ? "Sem estados disponíveis"
+                                            : "Selecione o estado"
+                                }
+                            />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-[300px]">
+                            {availableStates.map((s) => (
+                                <SelectItem key={s.isoCode} value={s.isoCode}>
+                                    {s.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
 
-            <div className="space-y-2">
-                <Label>{cityLabel} *</Label>
-                <Select
-                    value={city}
-                    onValueChange={onCityChange}
-                    disabled={!stateCode || availableCities.length === 0}
-                >
-                    <SelectTrigger className="bg-secondary border-border">
-                        <SelectValue placeholder={!stateCode ? "Aguardando Estado..." : "Selecione a Cidade"} />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {availableCities.map((c) => (
-                            <SelectItem key={c.name} value={c.name}>{c.name}</SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+                {/* City Select */}
+                <div className="space-y-2">
+                    <Label>{cityLabel} *</Label>
+                    <Select
+                        value={city}
+                        onValueChange={handleCityChange}
+                        disabled={!stateCode || availableCities.length === 0}
+                    >
+                        <SelectTrigger className="bg-secondary border-border disabled:opacity-50 disabled:cursor-not-allowed">
+                            <SelectValue
+                                placeholder={
+                                    !stateCode
+                                        ? "Selecione o estado primeiro"
+                                        : availableCities.length === 0
+                                            ? "Sem cidades disponíveis"
+                                            : "Selecione a cidade"
+                                }
+                            />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-[300px]">
+                            {availableCities.map((c) => (
+                                <SelectItem key={c.name} value={c.name}>
+                                    {c.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
             </div>
         </div>
     );

@@ -92,12 +92,6 @@ const Jogadores = () => {
                 {t("listing.playersSubtitle", "Explore perfis de jogadores de handebol de todo o mundo. Use os filtros para encontrar o talento ideal.")}
               </p>
             </div>
-            <Link to="/criar-jogador">
-              <Button variant="hero" className="gap-2">
-                <Plus className="w-4 h-4" />
-                {t("listing.createProfile")}
-              </Button>
-            </Link>
           </div>
 
           {/* Search and Filters */}

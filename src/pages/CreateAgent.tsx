@@ -9,24 +9,31 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { getAgents, saveAgents, COUNTRIES, Agent } from "@/data/mockData";
-import { Upload, Users, Save } from "lucide-react";
+import { Upload, Users, Save, Eye, EyeOff } from "lucide-react";
 import LocationSelector from "@/components/common/LocationSelector";
+import { useUser } from "@/contexts/UserContext";
 
 const CreateAgent = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useUser();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    password: "",
     agency: "",
     country: "",
     state: "",
     city: "",
     description: "",
   });
+
+
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -72,6 +79,8 @@ const CreateAgent = () => {
 
     if (!formData.name.trim()) newErrors.name = "Nome é obrigatório";
     if (!formData.email.trim()) newErrors.email = "Email é obrigatório";
+    if (!formData.password) newErrors.password = "Senha é obrigatória";
+    if (formData.password.length < 6) newErrors.password = "A senha deve ter pelo menos 6 caracteres";
     if (!formData.country) newErrors.country = "País é obrigatório";
 
     setErrors(newErrors);
@@ -90,8 +99,11 @@ const CreateAgent = () => {
       return;
     }
 
+    const userId = `user-${Date.now()}`;
+    const profileId = `agent-${Date.now()}`;
+
     const newAgent: Agent = {
-      id: `agent-${Date.now()}`,
+      id: profileId,
       name: formData.name,
       email: formData.email,
       agency: formData.agency || undefined,
@@ -103,6 +115,7 @@ const CreateAgent = () => {
       agencyLogoUrl: logoPreview || undefined,
       clientIds: [],
       createdAt: new Date().toISOString().split("T")[0],
+      userId,
     };
 
     const agents = getAgents();
@@ -114,7 +127,15 @@ const CreateAgent = () => {
       description: "Seu perfil de agente foi criado e está disponível para visualização.",
     });
 
-    navigate(`/agente/${newAgent.id}`);
+    login({
+      name: formData.name,
+      email: formData.email,
+      type: 'agent',
+      isPremium: false,
+      profileId,
+    });
+
+    navigate(`/dashboard`);
   };
 
   return (
@@ -222,6 +243,29 @@ const CreateAgent = () => {
                     className={errors.email ? "border-destructive" : ""}
                   />
                   {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="password">Senha *</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      placeholder="******"
+                      className={`pr-10 ${errors.password ? "border-destructive" : ""}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
                 </div>
 
                 <div className="space-y-2">
