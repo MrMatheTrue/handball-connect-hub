@@ -1,0 +1,181 @@
+{
+    "nav": {
+        "players": "Jugadores",
+        "coaches": "Entrenadores",
+        "clubs": "Clubes",
+        "agents": "Agentes",
+        "opportunities": "Oportunidades",
+        "news": "Noticias",
+        "admin": "Panel Admin",
+        "login": "Entrar",
+        "register": "Registrar"
+    },
+    "hero": {
+        "badge": "La plataforma #1 del balonmano",
+        "title1": "Conecta tu",
+        "title2": "talento",
+        "title3": "al mundo del",
+        "title4": "balonmano",
+        "subtitle": "Jugadores, clubes y agentes en una sola plataforma. Encuentra oportunidades, haz conexiones e impulsa tu carrera en el balonmano.",
+        "cta": "Crea Perfil Gratis",
+        "howItWorks": "Cómo Funciona",
+        "stats": {
+            "players": "Jugadores",
+            "clubs": "Clubes",
+            "opportunities": "Oportunidades"
+        }
+    },
+    "profiles": {
+        "badge": "Para Todos os Perfis",
+        "title": "Quién puede formar parte de",
+        "highlight": "HandZone?",
+        "subtitle": "Una plataforma completa para todos los involucrados en el universo del balonmano.",
+        "player": {
+            "title": "Jugadores",
+            "description": "Crea tu perfil profesional, muestra tu talento y conéctate con clubes y agentes de todo el mundo.",
+            "feat1": "Perfil completo con estadísticas",
+            "feat2": "Galería de fotos y vídeos",
+            "feat3": "Visibilidad para reclutadores",
+            "feat4": "Postulación a oportunidades",
+            "cta": "Ver Jugadores"
+        },
+        "club": {
+            "title": "Clubes",
+            "description": "Presenta tu club, publica vacantes y encuentra los talentos perfectos para fortalecer tu plantilla.",
+            "feat1": "Página institucional del club",
+            "feat2": "Publicación de vacantes",
+            "feat3": "Búsqueda avanzada de jugadores",
+            "feat4": "Gestión de postulaciones",
+            "cta": "Ver Clubes"
+        },
+        "agent": {
+            "title": "Agentes",
+            "description": "Gestiona a tus atletas, publica oportunidades y conecta talentos con los mejores equipos.",
+            "feat1": "Portafolio de atletas",
+            "feat2": "Publicación de oportunidades",
+            "feat3": "Comunicación directa",
+            "feat4": "Herramientas de gestión",
+            "cta": "Ver Agentes"
+        }
+    },
+    "opps": {
+        "badge": "Oportunidades",
+        "title": "Vacantes en",
+        "highlight": "Destacado",
+        "subtitle": "Las mejores oportunidades del balonmano mundial están aquí. Encuentra el puesto perfecto para tu carrera.",
+        "viewAll": "Ver Todas las Vacantes",
+        "featured": "Destacado",
+        "daysAgo_one": "Hace 1 día",
+        "daysAgo_other": "Hace {{count}} días",
+        "premiumLock": "Detalles completos para suscriptores",
+        "viewDetails": "Ver Detalles",
+        "apply": "Postularse",
+        "perksTitle": "Desbloquea el Acceso",
+        "perksSubtitle": "Ten acceso completo a todas las vacantes, detalles exclusivos, candidatura directa y comunicación ilimitada.",
+        "perksCta": "Ver Planes Premium"
+    },
+    "news": {
+        "badge": "Noticias",
+        "title": "Últimas del",
+        "highlight": "Balonmano",
+        "subtitle": "Mantente al día de todo lo que ocurre en el mundo del balonmano.",
+        "viewAll": "Ver Todas las Noticias"
+    },
+    "cta": {
+        "title": "Listo para dar el",
+        "highlight": "siguiente paso",
+        "subtitle": "Únete a miles de jugadores, clubes y agentes que ya forman parte de la mayor comunidad de balonmano.",
+        "start": "Empezar Ahora — Es Gratis",
+        "viewPlans": "Ver Planes Premium"
+    },
+    "footer": {
+        "description": "La plataforma que conecta talentos del balonmano con oportunidades únicas. Jugadores, clubes y agentes en un solo lugar.",
+        "sections": {
+            "platform": "Plataforma",
+            "resources": "Recursos",
+            "company": "Empresa"
+        },
+        "links": {
+            "over": "Sobre Nosotros",
+            "contact": "Contacto",
+            "terms": "Términos de Uso",
+            "privacy": "Privacidad",
+            "faq": "FAQ"
+        },
+        "rights": "Todos los derechos reservados."
+    },
+    "listing": {
+        "filters": "Filtros",
+        "clear": "Limpiar",
+        "searchPlaceholder": "Buscar...",
+        "found": "{{count}} encontrados",
+        "noResults": "No se encontraron resultados.",
+        "noResultsDesc": "Intenta ajustar los filtros o hacer una búsqueda diferente.",
+        "viewProfile": "Ver Perfil",
+        "createProfile": "Crear Perfil",
+        "country": "País",
+        "allCountries": "Todos los países",
+        "level": "Nivel",
+        "allLevels": "Todos los niveles",
+        "status": "Estado",
+        "allStatuses": "Todos los estados",
+        "position": "Posición",
+        "allPositions": "Todas las posiciones",
+        "league": "Liga",
+        "allLeagues": "Todas las ligas",
+        "type": "Tipo",
+        "allTypes": "Todos los tipos",
+        "athletes": "Atletas",
+        "experience": "Experiencia",
+        "founded": "Fundado en",
+        "searchPlayersPlaceholder": "Buscar jugadores...",
+        "searchCoachesPlaceholder": "Buscar entrenadores...",
+        "searchClubsPlaceholder": "Buscar clubes...",
+        "searchAgentsPlaceholder": "Buscar agentes...",
+        "searchOppsPlaceholder": "Buscar oportunidades..."
+    },
+    "auth": {
+        "login": "Entrar",
+        "register": "Registrar",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "forgotPassword": "¿Olvidaste tu contraseña?",
+        "noAccount": "¿No tienes una cuenta?",
+        "hasAccount": "¿Ya tienes una cuenta?",
+        "welcome": "¡Bienvenido de nuevo!",
+        "loginSubtitle": "Inicia sesión en tu cuenta para continuar",
+        "registerTitle": "Crea tu cuenta en HandZone",
+        "registerStep1": "Elige el tipo de perfil",
+        "registerStep2": "Completa tus datos",
+        "registerStep3": "Completa tu perfil",
+        "stepType": "Tipo",
+        "stepAccount": "Cuenta",
+        "stepProfile": "Perfil",
+        "loginSuccess": "¡Inicio de sesión exitoso!",
+        "registerSuccess": "¡Perfil creado con éxito!"
+    },
+    "premium": {
+        "title": "Elige el plan ideal para tu",
+        "highlight": "carrera",
+        "subtitle": "Invierte en tu futuro en el balonmano. Accede a recursos exclusivos y conéctate con las mejores oportunidades.",
+        "status": "¡Eres un usuario Premium!",
+        "statusDesc": "Disfruta de todos los beneficios exclusivos de la plataforma.",
+        "badge": "Desbloquea todo el potencial",
+        "plans": {
+            "free": "Gratis",
+            "athlete": "Atleta / Entrenador",
+            "pro": "Club / Agente",
+            "forever": "para siempre",
+            "month": "/mes",
+            "popular": "Más Popular",
+            "current": "Plan Actual",
+            "subscribe": "Suscribirse Ahora",
+            "createFree": "Crear Cuenta Gratis"
+        },
+        "featuresTitle": "¿Por qué elegir",
+        "featuresSubtitle": "Recursos exclusivos que marcan la diferencia en tu carrera.",
+        "faq": "¿Aún tienes dudas sobre qué plan elegir?",
+        "viewFaq": "Ver Preguntas Frecuentes",
+        "summary": "Resumen de Precios"
+    }
+}

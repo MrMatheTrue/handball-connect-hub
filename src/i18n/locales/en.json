@@ -1,0 +1,181 @@
+{
+    "nav": {
+        "players": "Players",
+        "coaches": "Coaches",
+        "clubs": "Clubs",
+        "agents": "Agents",
+        "opportunities": "Opportunities",
+        "news": "News",
+        "admin": "Admin Dashboard",
+        "login": "Login",
+        "register": "Register"
+    },
+    "hero": {
+        "badge": "The #1 handball platform",
+        "title1": "Connect your",
+        "title2": "talent",
+        "title3": "to the",
+        "title4": "handball world",
+        "subtitle": "Players, clubs, and agents on a single platform. Find opportunities, make connections, and boost your handball career.",
+        "cta": "Create Free Profile",
+        "howItWorks": "How it Works",
+        "stats": {
+            "players": "Players",
+            "clubs": "Clubs",
+            "opportunities": "Opportunities"
+        }
+    },
+    "profiles": {
+        "badge": "For All Profiles",
+        "title": "Who can be part of",
+        "highlight": "HandZone?",
+        "subtitle": "A complete platform for everyone involved in the handball universe.",
+        "player": {
+            "title": "Players",
+            "description": "Create your professional profile, showcase your talent, and connect with clubs and agents worldwide.",
+            "feat1": "Full profile with statistics",
+            "feat2": "Photo and video gallery",
+            "feat3": "Visibility for recruiters",
+            "feat4": "Apply for opportunities",
+            "cta": "View Players"
+        },
+        "club": {
+            "title": "Clubs",
+            "description": "Showcase your club, post jobs, and find the perfect talent to strengthen your roster.",
+            "feat1": "Institutional club page",
+            "feat2": "Job posting",
+            "feat3": "Advanced player search",
+            "feat4": "Application management",
+            "cta": "View Clubs"
+        },
+        "agent": {
+            "title": "Agents",
+            "description": "Manage your athletes, post opportunities, and connect talent to the best teams.",
+            "feat1": "Athlete portfolio",
+            "feat2": "Opportunity posting",
+            "feat3": "Direct communication",
+            "feat4": "Management tools",
+            "cta": "View Agents"
+        }
+    },
+    "opps": {
+        "badge": "Opportunities",
+        "title": "Featured",
+        "highlight": "Jobs",
+        "subtitle": "The best opportunities in world handball are here. Find the perfect role for your career.",
+        "viewAll": "View All Jobs",
+        "featured": "Featured",
+        "daysAgo_one": "1 day ago",
+        "daysAgo_other": "{{count}} days ago",
+        "premiumLock": "Full details for subscribers",
+        "viewDetails": "View Details",
+        "apply": "Apply",
+        "perksTitle": "Unlock Access",
+        "perksSubtitle": "Get full access to all jobs, exclusive details, direct applications, and unlimited communication.",
+        "perksCta": "See Premium Plans"
+    },
+    "news": {
+        "badge": "News",
+        "title": "Latest from",
+        "highlight": "Handball",
+        "subtitle": "Stay up to date with everything happening in the handball world.",
+        "viewAll": "View All News"
+    },
+    "cta": {
+        "title": "Ready to take the",
+        "highlight": "next step",
+        "subtitle": "Join thousands of players, clubs, and agents already part of the largest handball community.",
+        "start": "Start Now — It's Free",
+        "viewPlans": "See Premium Plans"
+    },
+    "footer": {
+        "description": "The platform connecting handball talent with unique opportunities. Players, clubs, and agents in one place.",
+        "sections": {
+            "platform": "Platform",
+            "resources": "Resources",
+            "company": "Company"
+        },
+        "links": {
+            "over": "About Us",
+            "contact": "Contact",
+            "terms": "Terms of Use",
+            "privacy": "Privacy Policy",
+            "faq": "FAQ"
+        },
+        "rights": "All rights reserved."
+    },
+    "listing": {
+        "filters": "Filters",
+        "clear": "Clear",
+        "searchPlaceholder": "Search...",
+        "found": "{{count}} found",
+        "noResults": "No results found.",
+        "noResultsDesc": "Try adjusting the filters or making a different search.",
+        "viewProfile": "View Profile",
+        "createProfile": "Create Profile",
+        "country": "Country",
+        "allCountries": "All countries",
+        "level": "Level",
+        "allLevels": "All levels",
+        "status": "Status",
+        "allStatuses": "All statuses",
+        "position": "Position",
+        "allPositions": "All positions",
+        "league": "League",
+        "allLeagues": "All leagues",
+        "type": "Type",
+        "allTypes": "All types",
+        "athletes": "Athletes",
+        "experience": "Experience",
+        "founded": "Founded in",
+        "searchPlayersPlaceholder": "Search players...",
+        "searchCoachesPlaceholder": "Search coaches...",
+        "searchClubsPlaceholder": "Search clubs...",
+        "searchAgentsPlaceholder": "Search agents...",
+        "searchOppsPlaceholder": "Search opportunities..."
+    },
+    "auth": {
+        "login": "Login",
+        "register": "Register",
+        "email": "Email",
+        "password": "Password",
+        "forgotPassword": "Forgot password?",
+        "noAccount": "Don't have an account?",
+        "hasAccount": "Already have an account?",
+        "welcome": "Welcome back!",
+        "loginSubtitle": "Log in to your account to continue",
+        "registerTitle": "Create your HandZone account",
+        "registerStep1": "Choose profile type",
+        "registerStep2": "Fill in your details",
+        "registerStep3": "Complete your profile",
+        "stepType": "Type",
+        "stepAccount": "Account",
+        "stepProfile": "Profile",
+        "loginSuccess": "Login successful!",
+        "registerSuccess": "Profile created successfully!"
+    },
+    "premium": {
+        "title": "Choose the ideal plan for your",
+        "highlight": "career",
+        "subtitle": "Invest in your future in handball. Access exclusive resources and connect with the best opportunities.",
+        "status": "You are a Premium user!",
+        "statusDesc": "Enjoy all the exclusive benefits of the platform.",
+        "badge": "Unlock full potential",
+        "plans": {
+            "free": "Free",
+            "athlete": "Athlete / Coach",
+            "pro": "Club / Agent",
+            "forever": "forever",
+            "month": "/month",
+            "popular": "Most Popular",
+            "current": "Current Plan",
+            "subscribe": "Subscribe Now",
+            "createFree": "Create Free Account"
+        },
+        "featuresTitle": "Why choose",
+        "featuresSubtitle": "Exclusive features that make a difference in your career.",
+        "faq": "Still have questions about which plan to choose?",
+        "viewFaq": "View FAQ",
+        "summary": "Pricing Summary"
+    }
+}
