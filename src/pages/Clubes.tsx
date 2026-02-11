@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useUser } from "@/contexts/UserContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -80,12 +81,14 @@ const Clubes = () => {
                 {t("listing.clubsSubtitle", "Explore clubes de handebol de todo o mundo. Encontre equipes buscando novos talentos.")}
               </p>
             </div>
-            <Link to="/criar-clube">
-              <Button variant="hero" className="gap-2">
-                <Plus className="w-4 h-4" />
-                {t("listing.createProfile", "Cadastrar Clube")}
-              </Button>
-            </Link>
+            {!useUser().isLoggedIn && (
+              <Link to="/cadastro">
+                <Button variant="hero" className="gap-2">
+                  <Plus className="w-4 h-4" />
+                  {t("listing.createProfile", "Cadastrar Clube")}
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Search and Filters */}

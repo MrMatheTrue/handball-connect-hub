@@ -18,6 +18,7 @@ import UserManagement from "@/components/admin/UserManagement";
 import ArticleModeration from "@/components/admin/ArticleModeration";
 import GlobalMessages from "@/components/admin/GlobalMessages";
 import AdminStats from "@/components/admin/AdminStats";
+import AdminSettings from "@/components/admin/AdminSettings";
 
 const AdminDashboard = () => {
     const { isAdmin } = useUser();
@@ -93,13 +94,7 @@ const AdminDashboard = () => {
                             {activeTab === 'users' && <UserManagement />}
                             {activeTab === 'articles' && <ArticleModeration />}
                             {activeTab === 'messages' && <GlobalMessages />}
-                            {activeTab === 'settings' && (
-                                <div className="glass-card rounded-2xl p-12 text-center border-dashed">
-                                    <Settings className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                                    <h3 className="text-xl font-semibold mb-2">Configurações do Sistema</h3>
-                                    <p className="text-muted-foreground">Módulo em desenvolvimento. Aqui você poderá gerenciar taxas, categorias e parâmetros da plataforma.</p>
-                                </div>
-                            )}
+                            {activeTab === 'settings' && <AdminSettings />}
                         </div>
                     </div>
                 </div>
