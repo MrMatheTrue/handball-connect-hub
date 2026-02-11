@@ -83,7 +83,9 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                 <Label>{countryLabel} *</Label>
                 <Select value={countryCode} onValueChange={handleCountryChange}>
                     <SelectTrigger className="bg-secondary border-border">
-                        <SelectValue placeholder="Selecione o País" />
+                        <SelectValue placeholder="Selecione o País">
+                            {currentCountryObj?.name || "Selecione o País"}
+                        </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                         {countries.map((c) => (
@@ -101,7 +103,9 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                     disabled={!countryCode || availableStates.length === 0}
                 >
                     <SelectTrigger className="bg-secondary border-border">
-                        <SelectValue placeholder={!countryCode ? "Aguardando País..." : "Selecione o Estado"} />
+                        <SelectValue placeholder={!countryCode ? "Aguardando País..." : "Selecione o Estado"}>
+                            {currentStateObj?.name || (!countryCode ? "Aguardando País..." : "Selecione o Estado")}
+                        </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                         {availableStates.map((s) => (
@@ -119,7 +123,9 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
                     disabled={!stateCode || availableCities.length === 0}
                 >
                     <SelectTrigger className="bg-secondary border-border">
-                        <SelectValue placeholder={!stateCode ? "Aguardando Estado..." : "Selecione a Cidade"} />
+                        <SelectValue placeholder={!stateCode ? "Aguardando Estado..." : "Selecione a Cidade"}>
+                            {city || (!stateCode ? "Aguardando Estado..." : "Selecione a Cidade")}
+                        </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                         {availableCities.map((c) => (

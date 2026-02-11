@@ -31,6 +31,7 @@ import CreatePlayer from "./pages/CreatePlayer";
 import CreateClub from "./pages/CreateClub";
 import CreateAgent from "./pages/CreateAgent";
 import CreateOpportunity from "./pages/CreateOpportunity";
+import ChangePassword from "./pages/ChangePassword";
 
 const queryClient = new QueryClient();
 
@@ -69,11 +70,12 @@ const App = () => (
             <Route path="/criar-clube" element={<CreateClub />} />
             <Route path="/criar-agente" element={<CreateAgent />} />
             <Route path="/publicar-vaga" element={<CreateOpportunity />} />
+            <Route path="/alterar-senha" element={<ChangePassword />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-          
+
         </BrowserRouter>
       </TooltipProvider>
     </UserProvider>
