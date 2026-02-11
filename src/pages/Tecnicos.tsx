@@ -9,10 +9,13 @@ import { getCoaches, COACH_SPECIALIZATIONS, COUNTRIES, LEVELS, STATUSES } from "
 import { Search, Filter, MapPin, Shield, Crown, ChevronDown, ChevronLeft, ChevronRight, X, Plus, GraduationCap } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { useUser } from "@/contexts/UserContext";
+
 const ITEMS_PER_PAGE = 8;
 
 const Tecnicos = () => {
     const { t } = useTranslation();
+    const { isLoggedIn } = useUser();
     const [searchQuery, setSearchQuery] = useState("");
     const [showFilters, setShowFilters] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -88,6 +91,14 @@ const Tecnicos = () => {
                                 {t("listing.coachesSubtitle", "Encontre treinadores, assistentes e preparadores físicos qualificados para sua equipe.")}
                             </p>
                         </div>
+                        {!isLoggedIn && (
+                            <Link to="/cadastro">
+                                <Button variant="hero" className="gap-2">
+                                    <Plus className="w-4 h-4" />
+                                    {t("listing.createProfile")}
+                                </Button>
+                            </Link>
+                        )}
                     </div>
 
                     {/* Search and Filters */}

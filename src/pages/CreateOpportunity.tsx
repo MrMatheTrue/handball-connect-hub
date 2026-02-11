@@ -28,7 +28,7 @@ const CreateOpportunity = () => {
   const { toast } = useToast();
   const { currentUser, isPremium, userType } = useUser();
 
-  const canPublish = (userType === 'club' || userType === 'agent') && isPremium;
+  const canPublish = (userType === 'club' || userType === 'agent' || userType === 'coach') && isPremium;
 
   const [formData, setFormData] = useState({
     title: "",
@@ -127,8 +127,8 @@ const CreateOpportunity = () => {
     navigate(`/oportunidade/${newOpportunity.id}`);
   };
 
-  // Show paywall for non-premium users
-  if (!isPremium || (userType !== 'club' && userType !== 'agent')) {
+  // Show paywall for non-premium users or restricted roles
+  if (!isPremium || (userType !== 'club' && userType !== 'agent' && userType !== 'coach')) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -138,10 +138,10 @@ const CreateOpportunity = () => {
               <Lock className="w-16 h-16 text-primary mx-auto mb-4" />
               <h1 className="text-2xl font-bold mb-4">Publicar Vagas</h1>
 
-              {userType !== 'club' && userType !== 'agent' ? (
+              {userType !== 'club' && userType !== 'agent' && userType !== 'coach' ? (
                 <>
                   <p className="text-muted-foreground mb-6">
-                    Apenas clubes e agentes podem publicar vagas na plataforma.
+                    Apenas técnicos, clubes e agentes podem publicar vagas na plataforma.
                     Altere seu tipo de usuário para acessar esta funcionalidade.
                   </p>
                   <Link to="/dashboard">

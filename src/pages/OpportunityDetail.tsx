@@ -44,7 +44,8 @@ const OpportunityDetail = () => {
 
   const club = clubs.find(c => c.id === opportunity.clubId);
   const hasApplied = opportunity.applicantIds.includes(currentUser?.id || "");
-  const canApply = userType === 'player' || userType === 'coach';
+  const canApply = (userType === 'player' && opportunity.type === 'player') ||
+    (userType === 'coach' && opportunity.type === 'coach');
   const daysAgo = Math.floor((new Date().getTime() - new Date(opportunity.createdAt).getTime()) / (1000 * 60 * 60 * 24));
 
   const handleApply = () => {
@@ -227,10 +228,14 @@ const OpportunityDetail = () => {
                   </div>
                 ) : !canApply ? (
                   <div className="text-center">
-                    <Building2 className="w-12 h-12 text-primary mx-auto mb-3" />
-                    <h3 className="font-semibold text-lg mb-2">Área para Jogadores</h3>
+                    <Lock className="w-12 h-12 text-primary mx-auto mb-3" />
+                    <h3 className="font-semibold text-lg mb-2">Restrição de Perfil</h3>
                     <p className="text-sm text-muted-foreground">
-                      Apenas jogadores e técnicos podem se candidatar a vagas.
+                      {userType === 'coach'
+                        ? "Técnicos só podem se candidatar a vagas de comissão técnica."
+                        : userType === 'player'
+                          ? "Atletas só podem se candidatar a vagas de jogador."
+                          : "Apenas jogadores e técnicos podem se candidatar a vagas."}
                     </p>
                   </div>
                 ) : isPremium ? (

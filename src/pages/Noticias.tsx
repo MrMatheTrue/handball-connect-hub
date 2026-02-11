@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { supabase } from "@/integrations/supabase/client";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -20,6 +21,7 @@ const Noticias = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoadingImage, setIsLoadingImage] = useState(false);
 
   // Form state
   const [newPost, setNewPost] = useState({
@@ -30,7 +32,67 @@ const Noticias = () => {
     imageUrl: "",
   });
 
-  const [allArticles, setAllArticles] = useState(getArticles());
+  const [allArticles, setAllArticles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchArticles = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('articles')
+        .select('*, profiles:author_id(full_name)')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const formattedArticles = (data || []).map(article => ({
+        id: article.id,
+        title: article.title,
+        content: article.content,
+        excerpt: article.summary || "",
+        category: article.category || "Notícias",
+        author: article.profiles?.full_name || "Anônimo",
+        authorId: article.author_id,
+        imageUrl: article.image_url,
+        publishedAt: article.created_at,
+        readTime: "5 min",
+        featured: false,
+        status: article.is_published ? 'approved' : 'pending',
+        authorRole: 'user', // Simplified
+      }));
+
+      setAllArticles(formattedArticles);
+    } catch (error: any) {
+      toast.error("Erro ao carregar notícias: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchArticles();
+
+    // Set up real-time subscription
+    const channel = supabase
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'articles'
+        },
+        (payload) => {
+          console.log('Real-time update:', payload);
+          fetchArticles();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   // Get unique categories
   const categories = useMemo(() => {
@@ -78,7 +140,7 @@ const Noticias = () => {
     return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
   };
 
-  const handleCreatePost = () => {
+  const handleCreatePost = async () => {
     if (!currentUser) {
       toast.error("Você precisa estar logado para postar uma notícia.");
       return;
@@ -89,35 +151,34 @@ const Noticias = () => {
       return;
     }
 
-    const isHandZone = currentUser.email.toLowerCase() === "admin@handzone.com";
+    try {
+      const isHandZone = currentUser.email.toLowerCase() === "admin@handzone.com";
 
-    const article: Article = {
-      id: `article-${Date.now()}`,
-      title: newPost.title,
-      category: newPost.category,
-      excerpt: newPost.excerpt,
-      content: newPost.content,
-      imageUrl: newPost.imageUrl || undefined,
-      author: isHandZone ? "Redação HandZone" : currentUser.name,
-      authorId: isHandZone ? 'admin' : currentUser.id,
-      publishedAt: new Date().toISOString(),
-      readTime: "5 min",
-      featured: false,
-      status: isHandZone ? 'approved' : 'pending',
-      authorRole: isHandZone ? 'admin' : 'user',
-    };
+      const { error } = await supabase
+        .from('articles')
+        .insert({
+          title: newPost.title,
+          content: newPost.content,
+          summary: newPost.excerpt,
+          category: newPost.category,
+          image_url: newPost.imageUrl || null,
+          author_id: currentUser.id,
+          is_published: isHandZone ? true : false,
+        });
 
-    const updatedArticles = [article, ...allArticles];
-    saveArticles(updatedArticles);
-    setAllArticles(updatedArticles); // Update local state to trigger re-render
+      if (error) throw error;
 
-    setIsModalOpen(false);
-    setNewPost({ title: "", category: "Notícias", excerpt: "", content: "", imageUrl: "" });
+      fetchArticles(); // Refresh list
+      setIsModalOpen(false);
+      setNewPost({ title: "", category: "Notícias", excerpt: "", content: "", imageUrl: "" });
 
-    if (isHandZone) {
-      toast.success("Notícia publicada com sucesso!");
-    } else {
-      toast.success("Notícia enviada para análise do administrador.");
+      if (isHandZone) {
+        toast.success("Notícia publicada com sucesso!");
+      } else {
+        toast.success("Notícia enviada para análise do administrador.");
+      }
+    } catch (error: any) {
+      toast.error("Erro ao publicar notícia: " + error.message);
     }
   };
 
@@ -201,17 +262,74 @@ const Noticias = () => {
                       />
                     </div>
                     <div className="grid gap-2">
-                      <Label htmlFor="imageUrl">URL da Imagem de Capa (opcional)</Label>
-                      <Input
-                        id="imageUrl"
-                        placeholder="https://exemplo.com/imagem.jpg"
-                        value={newPost.imageUrl}
-                        onChange={(e) => setNewPost({ ...newPost, imageUrl: e.target.value })}
-                        className="bg-secondary"
-                      />
-                      {newPost.imageUrl && (
-                        <div className="h-32 rounded-lg overflow-hidden bg-secondary border border-border">
-                          <img src={newPost.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                      <Label htmlFor="image">Imagem de Capa (opcional)</Label>
+                      <div className="flex flex-col gap-3">
+                        <Input
+                          id="image"
+                          type="file"
+                          accept="image/*"
+                          className="bg-secondary cursor-pointer"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+
+                            try {
+                              setIsLoadingImage(true);
+                              const fileExt = file.name.split('.').pop();
+                              const fileName = `${Math.random()}.${fileExt}`;
+                              const filePath = `articles/${fileName}`;
+
+                              const { error: uploadError } = await supabase.storage
+                                .from('articles')
+                                .upload(filePath, file);
+
+                              if (uploadError) throw uploadError;
+
+                              const { data: { publicUrl } } = supabase.storage
+                                .from('articles')
+                                .getPublicUrl(filePath);
+
+                              setNewPost({ ...newPost, imageUrl: publicUrl });
+                              toast.success("Imagem carregada com sucesso!");
+                            } catch (error: any) {
+                              toast.error("Erro ao carregar imagem: " + error.message);
+                              console.error(error);
+                            } finally {
+                              setIsLoadingImage(false);
+                            }
+                          }}
+                        />
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-px bg-border" />
+                          <span className="text-xs text-muted-foreground uppercase">ou use uma URL</span>
+                          <div className="flex-1 h-px bg-border" />
+                        </div>
+                        <Input
+                          id="imageUrl"
+                          placeholder="https://exemplo.com/imagem.jpg"
+                          value={newPost.imageUrl}
+                          onChange={(e) => setNewPost({ ...newPost, imageUrl: e.target.value })}
+                          className="bg-secondary"
+                        />
+                      </div>
+                      {(newPost.imageUrl || isLoadingImage) && (
+                        <div className="h-48 rounded-lg overflow-hidden bg-secondary border border-border flex items-center justify-center relative">
+                          {isLoadingImage ? (
+                            <div className="flex flex-col items-center gap-2">
+                              <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                              <span className="text-xs text-muted-foreground">Enviando...</span>
+                            </div>
+                          ) : (
+                            <>
+                              <img src={newPost.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                              <button
+                                onClick={() => setNewPost({ ...newPost, imageUrl: "" })}
+                                className="absolute top-2 right-2 p-1.5 rounded-full bg-background/80 text-foreground hover:bg-background transition-colors"
+                              >
+                                <Plus className="w-4 h-4 rotate-45" />
+                              </button>
+                            </>
+                          )}
                         </div>
                       )}
                     </div>

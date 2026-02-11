@@ -1,17 +1,99 @@
+import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { getArticles, Article } from "@/data/mockData";
-import { Calendar, Clock, User, ChevronLeft, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
+import { Loader2, Calendar, Clock, User, ChevronLeft, ArrowRight } from "lucide-react";
 
 const ArticleDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [article, setArticle] = useState<any>(null);
+  const [relatedArticles, setRelatedArticles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const articles = getArticles();
-  const article = articles.find(a => a.id === id);
-  const relatedArticles = articles.filter(a => a.id !== id && a.category === article?.category).slice(0, 3);
+  useEffect(() => {
+    const fetchArticleData = async () => {
+      try {
+        setLoading(true);
+        // Fetch current article
+        const { data: articleData, error: articleError } = await supabase
+          .from('articles')
+          .select('*, profiles:author_id(full_name)')
+          .eq('id', id)
+          .single();
+
+        if (articleError) throw articleError;
+
+        const formattedArticle = {
+          id: articleData.id,
+          title: articleData.title,
+          content: articleData.content,
+          excerpt: articleData.summary || "",
+          category: articleData.category || "Notícias",
+          author: articleData.profiles?.full_name || "Anônimo",
+          authorId: articleData.author_id,
+          imageUrl: articleData.image_url,
+          publishedAt: articleData.created_at,
+          readTime: "5 min",
+          featured: false,
+          status: articleData.is_published ? 'approved' : 'pending',
+          authorRole: 'user',
+        };
+
+        setArticle(formattedArticle);
+
+        // Fetch related articles
+        const { data: relatedData } = await supabase
+          .from('articles')
+          .select('*, profiles:author_id(full_name)')
+          .eq('category', articleData.category)
+          .neq('id', id)
+          .eq('is_published', true)
+          .limit(3);
+
+        const formattedRelated = (relatedData || []).map(a => ({
+          id: a.id,
+          title: a.title,
+          content: a.content,
+          excerpt: a.summary || "",
+          category: a.category || "Notícias",
+          author: a.profiles?.full_name || "Anônimo",
+          imageUrl: a.image_url,
+          publishedAt: a.created_at,
+          readTime: "5 min",
+        }));
+
+        setRelatedArticles(formattedRelated);
+      } catch (error: any) {
+        console.error("Error fetching article:", error);
+        toast.error("Erro ao carregar artigo.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchArticleData();
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="pt-48 pb-16">
+          <div className="container mx-auto px-4 flex flex-col items-center justify-center">
+            <Loader2 className="w-12 h-12 animate-spin text-primary mb-4" />
+            <p className="text-muted-foreground">Carregando artigo...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!article) {
     return (
@@ -174,7 +256,6 @@ const ArticleDetail = () => {
             </div>
           </div>
 
-          {/* More Articles */}
           <div className="mt-16">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl font-bold">Mais Notícias</h2>
@@ -187,13 +268,17 @@ const ArticleDetail = () => {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {articles.filter(a => a.id !== article.id).slice(0, 3).map((item) => (
+              {relatedArticles.map((item) => (
                 <Link key={item.id} to={`/noticia/${item.id}`}>
                   <div className="group glass-card rounded-2xl overflow-hidden card-hover">
                     <div className="relative h-48 bg-gradient-to-br from-primary/20 to-orange-light/10">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="font-display text-5xl text-primary/30">HZ</span>
-                      </div>
+                      {item.imageUrl ? (
+                        <img src={item.imageUrl} alt={item.title} className="absolute inset-0 w-full h-full object-cover" />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="font-display text-5xl text-primary/30">HZ</span>
+                        </div>
+                      )}
                       <div className="absolute top-4 left-4">
                         <span className="px-2 py-1 rounded-md bg-primary/20 text-primary text-xs font-semibold">
                           {item.category}

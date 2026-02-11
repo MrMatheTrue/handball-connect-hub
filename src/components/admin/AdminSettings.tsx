@@ -37,34 +37,51 @@ const AdminSettings = () => {
   });
 
   useEffect(() => {
+    // Load settings from localStorage
+    const savedSettings = localStorage.getItem('handzone_admin_settings');
+    if (savedSettings) {
+      try {
+        setSettings(JSON.parse(savedSettings));
+      } catch (e) {
+        console.error('Error parsing saved settings:', e);
+      }
+    }
     fetchStats();
   }, []);
 
   const fetchStats = async () => {
     setLoading(true);
     try {
-      const [profiles, articles, opportunities] = await Promise.all([
-        supabase.from('profiles').select('id, is_premium', { count: 'exact' }),
-        supabase.from('articles').select('id', { count: 'exact' }),
-        supabase.from('opportunities').select('id', { count: 'exact' }),
+      // More efficient count queries using Supabase count: 'exact', head: true
+      const [profilesResult, articlesResult, opportunitiesResult, premiumResult] = await Promise.all([
+        supabase.from('profiles').select('*', { count: 'exact', head: true }),
+        supabase.from('articles').select('*', { count: 'exact', head: true }),
+        supabase.from('opportunities').select('*', { count: 'exact', head: true }),
+        supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_premium', true),
       ]);
 
       setStats({
-        totalUsers: profiles.count || 0,
-        premiumUsers: profiles.data?.filter(p => p.is_premium).length || 0,
-        totalArticles: articles.count || 0,
-        totalOpportunities: opportunities.count || 0,
+        totalUsers: profilesResult.count || 0,
+        premiumUsers: premiumResult.count || 0,
+        totalArticles: articlesResult.count || 0,
+        totalOpportunities: opportunitiesResult.count || 0,
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível carregar as estatísticas.',
+        variant: 'destructive',
+      });
     }
     setLoading(false);
   };
 
   const handleSave = () => {
+    localStorage.setItem('handzone_admin_settings', JSON.stringify(settings));
     toast({
       title: 'Configurações salvas',
-      description: 'As configurações da plataforma foram atualizadas com sucesso.',
+      description: 'As configurações da plataforma foram atualizadas localmente.',
     });
   };
 
