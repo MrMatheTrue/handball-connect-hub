@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useUser } from "@/contexts/UserContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -69,15 +70,16 @@ const Agentes = () => {
             </p>
           </div>
 
-          {/* Actions */}
-          <div className="flex justify-end mb-6">
-            <Link to="/criar-agente">
-              <Button className="gap-2">
-                <Plus className="w-4 h-4" />
-                {t("listing.createProfile", "Cadastrar Perfil")}
-              </Button>
-            </Link>
-          </div>
+          {!useUser().isLoggedIn && (
+            <div className="flex justify-end mb-6">
+              <Link to="/cadastro">
+                <Button className="gap-2">
+                  <Plus className="w-4 h-4" />
+                  {t("listing.createProfile", "Cadastrar Perfil")}
+                </Button>
+              </Link>
+            </div>
+          )}
 
           {/* Search and Filters */}
           <div className="glass-card rounded-2xl p-6 mb-8">

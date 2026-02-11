@@ -27,6 +27,7 @@ const Noticias = () => {
     category: "Notícias",
     excerpt: "",
     content: "",
+    imageUrl: "",
   });
 
   const [allArticles, setAllArticles] = useState(getArticles());
@@ -96,8 +97,9 @@ const Noticias = () => {
       category: newPost.category,
       excerpt: newPost.excerpt,
       content: newPost.content,
+      imageUrl: newPost.imageUrl || undefined,
       author: isHandZone ? "Redação HandZone" : currentUser.name,
-      authorId: isHandZone ? 'admin' : currentUser.id, // Set the authorId
+      authorId: isHandZone ? 'admin' : currentUser.id,
       publishedAt: new Date().toISOString(),
       readTime: "5 min",
       featured: false,
@@ -110,7 +112,7 @@ const Noticias = () => {
     setAllArticles(updatedArticles); // Update local state to trigger re-render
 
     setIsModalOpen(false);
-    setNewPost({ title: "", category: "Notícias", excerpt: "", content: "" });
+    setNewPost({ title: "", category: "Notícias", excerpt: "", content: "", imageUrl: "" });
 
     if (isHandZone) {
       toast.success("Notícia publicada com sucesso!");
@@ -197,6 +199,21 @@ const Noticias = () => {
                         value={newPost.content}
                         onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
                       />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="imageUrl">URL da Imagem de Capa (opcional)</Label>
+                      <Input
+                        id="imageUrl"
+                        placeholder="https://exemplo.com/imagem.jpg"
+                        value={newPost.imageUrl}
+                        onChange={(e) => setNewPost({ ...newPost, imageUrl: e.target.value })}
+                        className="bg-secondary"
+                      />
+                      {newPost.imageUrl && (
+                        <div className="h-32 rounded-lg overflow-hidden bg-secondary border border-border">
+                          <img src={newPost.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                        </div>
+                      )}
                     </div>
                   </div>
                   <DialogFooter>

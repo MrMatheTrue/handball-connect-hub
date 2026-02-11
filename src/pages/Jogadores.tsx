@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useUser } from "@/contexts/UserContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ const ITEMS_PER_PAGE = 8;
 
 const Jogadores = () => {
   const { t } = useTranslation();
+  const { isLoggedIn } = useUser();
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -92,12 +94,14 @@ const Jogadores = () => {
                 {t("listing.playersSubtitle", "Explore perfis de jogadores de handebol de todo o mundo. Use os filtros para encontrar o talento ideal.")}
               </p>
             </div>
-            <Link to="/criar-jogador">
-              <Button variant="hero" className="gap-2">
-                <Plus className="w-4 h-4" />
-                {t("listing.createProfile")}
-              </Button>
-            </Link>
+            {!isLoggedIn && (
+              <Link to="/cadastro">
+                <Button variant="hero" className="gap-2">
+                  <Plus className="w-4 h-4" />
+                  {t("listing.createProfile")}
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Search and Filters */}

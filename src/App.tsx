@@ -17,6 +17,7 @@ import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import RecuperarSenha from "./pages/RecuperarSenha";
 import NotFound from "./pages/NotFound";
 // Profile detail pages
 import PlayerProfile from "./pages/PlayerProfile";
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/recuperar-senha" element={<RecuperarSenha />} />
 
             {/* Profile Detail Routes */}
             <Route path="/jogador/:id" element={<PlayerProfile />} />
