@@ -762,14 +762,14 @@ const Cadastro = () => {
                     if (profileType) {
                       localStorage.setItem('hz_pending_profile_type', profileType);
                     }
-                    const { error } = await supabase.auth.signInWithOAuth({
-                      provider: 'google',
-                      options: {
-                        redirectTo: window.location.origin + '/cadastro',
-                      }
+                    const result = await lovable.auth.signInWithOAuth("google", {
+                      redirect_uri: window.location.origin + '/cadastro',
                     });
-                    if (error) {
-                      toast({ title: "Erro", description: error.message, variant: "destructive" });
+
+                    if (result.error) {
+                      toast({ title: "Erro", description: result.error instanceof Error ? result.error.message : String(result.error), variant: "destructive" });
+                    } else if (result.url) {
+                      window.location.assign(result.url);
                     }
                   }}
                 >
