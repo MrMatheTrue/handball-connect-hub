@@ -15,6 +15,7 @@ import { toast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import LocationSelector from "@/components/common/LocationSelector";
+import { lovable } from "@/integrations/lovable/index";
 
 const Cadastro = () => {
   const { t } = useTranslation();
