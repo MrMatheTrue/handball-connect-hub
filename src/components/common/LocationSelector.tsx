@@ -81,11 +81,9 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
         <div className={`grid sm:grid-cols-3 gap-4 ${className}`}>
             <div className="space-y-2">
                 <Label>{countryLabel} *</Label>
-                <Select value={countryCode} onValueChange={handleCountryChange}>
+                <Select value={countryCode || undefined} onValueChange={handleCountryChange}>
                     <SelectTrigger className="bg-secondary border-border">
-                        <SelectValue placeholder="Selecione o País">
-                            {currentCountryObj?.name || "Selecione o País"}
-                        </SelectValue>
+                        <SelectValue placeholder="Selecione o País" />
                     </SelectTrigger>
                     <SelectContent>
                         {countries.map((c) => (
@@ -98,14 +96,13 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
             <div className="space-y-2">
                 <Label>{stateLabel} *</Label>
                 <Select
-                    value={stateCode}
+                    key={countryCode || "no-country"}
+                    value={stateCode || undefined}
                     onValueChange={handleStateChange}
                     disabled={!countryCode || availableStates.length === 0}
                 >
                     <SelectTrigger className="bg-secondary border-border">
-                        <SelectValue placeholder={!countryCode ? "Aguardando País..." : "Selecione o Estado"}>
-                            {currentStateObj?.name || (!countryCode ? "Aguardando País..." : "Selecione o Estado")}
-                        </SelectValue>
+                        <SelectValue placeholder={!countryCode ? "Aguardando País..." : "Selecione o Estado"} />
                     </SelectTrigger>
                     <SelectContent>
                         {availableStates.map((s) => (
@@ -118,14 +115,13 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
             <div className="space-y-2">
                 <Label>{cityLabel} *</Label>
                 <Select
-                    value={city}
+                    key={stateCode || "no-state"}
+                    value={city || undefined}
                     onValueChange={onCityChange}
                     disabled={!stateCode || availableCities.length === 0}
                 >
                     <SelectTrigger className="bg-secondary border-border">
-                        <SelectValue placeholder={!stateCode ? "Aguardando Estado..." : "Selecione a Cidade"}>
-                            {city || (!stateCode ? "Aguardando Estado..." : "Selecione a Cidade")}
-                        </SelectValue>
+                        <SelectValue placeholder={!stateCode ? "Aguardando Estado..." : "Selecione a Cidade"} />
                     </SelectTrigger>
                     <SelectContent>
                         {availableCities.map((c) => (
