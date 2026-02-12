@@ -55,11 +55,21 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const isAdminUser = roleData?.role === 'admin';
     setIsAdmin(isAdminUser);
 
+    // Check for pending profile type from registration
+    const pendingType = localStorage.getItem('hz_pending_profile_type') as UserType;
+    let currentUserType = (profile?.user_type as UserType) || null;
+
+    if (pendingType && (!currentUserType || currentUserType === 'player')) {
+      await supabase.from('profiles').update({ user_type: pendingType } as any).eq('id', user.id);
+      currentUserType = pendingType;
+      localStorage.removeItem('hz_pending_profile_type');
+    }
+
     const newUser: CurrentUser = {
       id: user.id,
       name: profile?.full_name || user.user_metadata?.full_name || '',
       email: user.email || '',
-      type: (profile?.user_type as UserType) || null,
+      type: currentUserType,
       isPremium: profile?.is_premium || false,
       role: isAdminUser ? 'admin' : 'user',
     };
