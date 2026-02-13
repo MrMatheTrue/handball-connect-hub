@@ -118,7 +118,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         data: { full_name: fullName },
       },
     });
-    if (error) return { error: error.message };
+    if (error) {
+      console.error("Signup error:", error);
+      return { error: error.message };
+    }
 
     // Update user_type on profile after signup (trigger creates it with default 'player')
     // We'll update it after the session is established
