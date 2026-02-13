@@ -137,8 +137,6 @@ const Login = () => {
 
                   if (result.error) {
                     toast({ title: "Erro", description: result.error instanceof Error ? result.error.message : String(result.error), variant: "destructive" });
-                  } else if (result.url) {
-                    window.location.assign(result.url);
                   }
                 }}
               >

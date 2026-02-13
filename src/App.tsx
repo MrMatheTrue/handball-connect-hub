@@ -32,6 +32,13 @@ import CreateClub from "./pages/CreateClub";
 import CreateAgent from "./pages/CreateAgent";
 import CreateOpportunity from "./pages/CreateOpportunity";
 import ChangePassword from "./pages/ChangePassword";
+// Footer pages
+import ComoFunciona from "./pages/ComoFunciona";
+import FAQ from "./pages/FAQ";
+import SobreNos from "./pages/SobreNos";
+import Contato from "./pages/Contato";
+import TermosDeUso from "./pages/TermosDeUso";
+import Privacidade from "./pages/Privacidade";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +78,14 @@ const App = () => (
             <Route path="/criar-agente" element={<CreateAgent />} />
             <Route path="/publicar-vaga" element={<CreateOpportunity />} />
             <Route path="/alterar-senha" element={<ChangePassword />} />
+
+            {/* Footer Pages */}
+            <Route path="/como-funciona" element={<ComoFunciona />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/sobre" element={<SobreNos />} />
+            <Route path="/contato" element={<Contato />} />
+            <Route path="/termos" element={<TermosDeUso />} />
+            <Route path="/privacidade" element={<Privacidade />} />
 
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
