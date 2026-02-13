@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const ChangePassword = () => {
     const navigate = useNavigate();
-    const { user } = useUser();
+    const { currentUser } = useUser();
     const { toast } = useToast();
 
     const [currentPassword, setCurrentPassword] = useState("");
@@ -49,7 +49,7 @@ const ChangePassword = () => {
         try {
             // First, verify current password by attempting to sign in
             const { error: signInError } = await supabase.auth.signInWithPassword({
-                email: user?.email || "",
+                email: currentUser?.email || "",
                 password: currentPassword,
             });
 
@@ -82,7 +82,7 @@ const ChangePassword = () => {
         }
     };
 
-    if (!user) {
+    if (!currentUser) {
         navigate("/login");
         return null;
     }

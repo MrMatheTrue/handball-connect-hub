@@ -120,11 +120,11 @@ const Footer = () => {
             © 2024 HandZone. {t("footer.rights")}
           </p>
           <a
-            href="mailto:contato@handzone.com"
+            href="mailto:handzone.contato@gmail.com"
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
           >
             <Mail className="w-4 h-4" />
-            contato@handzone.com
+            handzone.contato@gmail.com
           </a>
         </div>
       </div>

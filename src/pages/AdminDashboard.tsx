@@ -7,22 +7,22 @@ import {
     Users,
     FileText,
     MessageSquare,
-    BarChart3,
     Shield,
     Settings,
     Search,
-    LayoutDashboard
+    LayoutDashboard,
+    Handshake
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import UserManagement from "@/components/admin/UserManagement";
 import ArticleModeration from "@/components/admin/ArticleModeration";
 import GlobalMessages from "@/components/admin/GlobalMessages";
 import AdminStats from "@/components/admin/AdminStats";
 import AdminSettings from "@/components/admin/AdminSettings";
+import PartnershipManagement from "@/components/admin/PartnershipManagement";
 
 const AdminDashboard = () => {
     const { isAdmin } = useUser();
-    const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'articles' | 'messages' | 'settings'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'articles' | 'partnerships' | 'messages' | 'settings'>('overview');
 
     if (!isAdmin) {
         return <Navigate to="/" replace />;
@@ -32,6 +32,7 @@ const AdminDashboard = () => {
         { id: 'overview', label: 'Visão Geral', icon: LayoutDashboard },
         { id: 'users', label: 'Gerenciar Usuários', icon: Users },
         { id: 'articles', label: 'Moderação de Notícias', icon: FileText },
+        { id: 'partnerships', label: 'Parcerias', icon: Handshake },
         { id: 'messages', label: 'Monitor de Conversas', icon: MessageSquare },
         { id: 'settings', label: 'Configurações', icon: Settings },
     ];
@@ -41,22 +42,20 @@ const AdminDashboard = () => {
             <Header />
             <main className="container mx-auto px-4 py-8">
                 <div className="flex flex-col md:flex-row gap-8">
-                    {/* Sidebar */}
                     <aside className="w-full md:w-64 flex-shrink-0">
                         <div className="glass-card rounded-2xl p-4 sticky top-24">
                             <div className="flex items-center gap-2 px-4 py-3 mb-6">
                                 <Shield className="w-6 h-6 text-primary" />
                                 <h1 className="font-bold text-lg">Master Admin</h1>
                             </div>
-
                             <nav className="space-y-1">
                                 {menuItems.map((item) => (
                                     <button
                                         key={item.id}
                                         onClick={() => setActiveTab(item.id as any)}
                                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === item.id
-                                                ? 'bg-primary text-primary-foreground shadow-lg glow-orange'
-                                                : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                                            ? 'bg-primary text-primary-foreground shadow-lg glow-orange'
+                                            : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                                             }`}
                                     >
                                         <item.icon className="w-4 h-4" />
@@ -67,7 +66,6 @@ const AdminDashboard = () => {
                         </div>
                     </aside>
 
-                    {/* Main Content */}
                     <div className="flex-1 min-w-0">
                         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div>
@@ -78,7 +76,6 @@ const AdminDashboard = () => {
                                     Painel de controle macro da plataforma HandZone.
                                 </p>
                             </div>
-
                             <div className="relative group max-w-xs w-full">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                                 <input
@@ -93,6 +90,7 @@ const AdminDashboard = () => {
                             {activeTab === 'overview' && <AdminStats />}
                             {activeTab === 'users' && <UserManagement />}
                             {activeTab === 'articles' && <ArticleModeration />}
+                            {activeTab === 'partnerships' && <PartnershipManagement />}
                             {activeTab === 'messages' && <GlobalMessages />}
                             {activeTab === 'settings' && <AdminSettings />}
                         </div>
