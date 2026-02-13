@@ -144,7 +144,7 @@ const ArticleDetail = () => {
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="font-display text-8xl text-primary/30">HZ</span>
+                      <img src="/logo.png" alt="HZ" className="w-32 h-32 object-contain opacity-30" />
                     </div>
                   )}
                   <div className="absolute top-4 left-4">
@@ -209,8 +209,8 @@ const ArticleDetail = () => {
                         className="block group"
                       >
                         <div className="flex gap-4 p-3 rounded-xl hover:bg-secondary/50 transition-colors">
-                          <div className="w-20 h-16 rounded-lg bg-gradient-to-br from-primary/20 to-orange-light/10 flex items-center justify-center flex-shrink-0">
-                            <span className="font-display text-xl text-primary/30">HZ</span>
+                          <div className="w-20 h-16 rounded-lg bg-gradient-to-br from-primary/20 to-orange-light/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            <img src="/logo.png" alt="HZ" className="w-full h-full object-cover opacity-50" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <h3 className="font-medium text-sm text-foreground group-hover:text-primary transition-colors line-clamp-2">
@@ -276,7 +276,7 @@ const ArticleDetail = () => {
                         <img src={item.imageUrl} alt={item.title} className="absolute inset-0 w-full h-full object-cover" />
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="font-display text-5xl text-primary/30">HZ</span>
+                          <img src="/logo.png" alt="HZ" className="w-20 h-20 object-contain opacity-30" />
                         </div>
                       )}
                       <div className="absolute top-4 left-4">

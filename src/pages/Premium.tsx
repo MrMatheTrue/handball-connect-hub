@@ -141,7 +141,12 @@ const Premium = () => {
 
           {/* Pricing Cards */}
           <div className="grid md:grid-cols-3 gap-6 lg:gap-8 mb-24">
-            {plans.map((plan, index) => (
+            {plans.filter(plan => {
+              if (userType && ['club', 'coach', 'agent'].includes(userType) && plan.price === "R$ 0") {
+                return false;
+              }
+              return true;
+            }).map((plan, index) => (
               <div
                 key={index}
                 className={`relative glass-card rounded-2xl p-8 ${plan.popular ? "border-2 border-primary glow-orange" : "border border-border"}`}

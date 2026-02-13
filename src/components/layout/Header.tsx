@@ -52,8 +52,8 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-orange-light flex items-center justify-center shadow-lg glow-orange group-hover:scale-110 transition-transform">
-              <span className="font-display text-xl text-primary-foreground">HZ</span>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg glow-orange group-hover:scale-110 transition-transform overflow-hidden">
+              <img src="/logo.png" alt="HZ" className="w-full h-full object-cover" />
             </div>
             <span className="font-display text-2xl tracking-wider gradient-text hidden sm:block">
               HANDZONE

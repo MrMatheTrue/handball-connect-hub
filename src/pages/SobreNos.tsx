@@ -20,10 +20,10 @@ const SobreNos = () => {
           <div className="glass-card rounded-2xl p-8 mb-8">
             <h2 className="text-2xl font-bold mb-4">Nossa História</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              O HandZone foi criado em 2024 com a missão de democratizar o acesso a oportunidades no handebol. Percebemos que muitos talentos ficavam escondidos por falta de visibilidade e conexões no meio esportivo.
+              O HandZone foi fundado em 2024, nascendo da necessidade real de conectar a comunidade do handebol. Identificamos que muitos atletas talentosos, técnicos qualificados e clubes em busca de reforços tinham dificuldade de se encontrar em um único lugar.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Nascemos da paixão pelo handebol e da vontade de criar uma ponte entre jogadores, clubes, técnicos e agentes de todo o mundo. Nossa plataforma foi desenvolvida para ser simples, acessível e eficiente, permitindo que qualquer profissional do handebol possa se conectar e crescer na carreira.
+              Nossa plataforma foi desenvolvida para ser o ecossistema definitivo do handebol, facilitando contratações, networking e a visibilidade do esporte. Hoje, conectamos profissionais de diversos países, promovendo o crescimento da modalidade através da tecnologia.
             </p>
           </div>
 

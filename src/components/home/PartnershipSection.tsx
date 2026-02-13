@@ -32,6 +32,15 @@ const PartnershipSection = () => {
     if (error) {
       toast({ title: "Erro ao enviar", description: "Tente novamente mais tarde.", variant: "destructive" });
     } else {
+      // Trigger email notification (Backend Function)
+      // Note: This requires a Supabase Edge Function 'send-partnership-emails' to be deployed.
+      // We attempt to call it, but don't block the UI if it fails/doesn't exist yet.
+      supabase.functions.invoke('send-partnership-emails', {
+        body: form
+      }).then(({ error }) => {
+        if (error) console.error("Error sending email notification:", error);
+      });
+
       toast({ title: "Solicitação enviada!", description: "Entraremos em contato em breve." });
       setForm({ company_name: "", contact_name: "", email: "", phone: "", partnership_type: "", message: "" });
     }

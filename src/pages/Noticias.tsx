@@ -276,8 +276,8 @@ const Noticias = () => {
                             try {
                               setIsLoadingImage(true);
                               const fileExt = file.name.split('.').pop();
-                              const fileName = `${Math.random()}.${fileExt}`;
-                              const filePath = `articles/${fileName}`;
+                              const fileName = `${crypto.randomUUID()}.${fileExt}`;
+                              const filePath = `${fileName}`;
 
                               const { error: uploadError } = await supabase.storage
                                 .from('articles')
@@ -401,7 +401,7 @@ const Noticias = () => {
                       <img src={featuredArticle.imageUrl} alt={featuredArticle.title} className="absolute inset-0 w-full h-full object-cover" />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="font-display text-8xl text-primary/30">HZ</span>
+                        <img src="/logo.png" alt="HZ" className="w-32 h-32 object-contain opacity-30" />
                       </div>
                     )}
                   </div>
@@ -459,7 +459,7 @@ const Noticias = () => {
                     <img src={article.imageUrl} alt={article.title} className="absolute inset-0 w-full h-full object-cover" />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="font-display text-5xl text-primary/30">HZ</span>
+                      <img src="/logo.png" alt="HZ" className="w-20 h-20 object-contain opacity-30" />
                     </div>
                   )}
                   <div className="absolute top-4 left-4 flex gap-2">

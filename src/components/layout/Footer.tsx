@@ -40,8 +40,8 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-orange-light flex items-center justify-center shadow-lg">
-                <span className="font-display text-xl text-primary-foreground">HZ</span>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
+                <img src="/logo.png" alt="HZ" className="w-full h-full object-cover" />
               </div>
               <span className="font-display text-2xl tracking-wider gradient-text">
                 HANDZONE
@@ -119,13 +119,24 @@ const Footer = () => {
           <p className="text-sm text-muted-foreground">
             © 2024 HandZone. {t("footer.rights")}
           </p>
-          <a
-            href="mailto:handzone.contato@gmail.com"
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            <Mail className="w-4 h-4" />
-            handzone.contato@gmail.com
-          </a>
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <a
+              href="mailto:handzone.contato@gmail.com"
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Mail className="w-4 h-4" />
+              handzone.contato@gmail.com
+            </a>
+            <span className="text-sm text-muted-foreground hidden sm:block">|</span>
+            <a
+              href="https://wa.me/5512992232791"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              (12) 99223-2791
+            </a>
+          </div>
         </div>
       </div>
     </footer>

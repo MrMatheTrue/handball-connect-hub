@@ -51,8 +51,8 @@ const Login = () => {
             {/* Header */}
             <div className="text-center mb-8">
               <Link to="/" className="inline-flex items-center gap-2 mb-8">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-orange-light flex items-center justify-center shadow-lg glow-orange">
-                  <span className="font-display text-2xl text-primary-foreground">HZ</span>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg glow-orange overflow-hidden">
+                  <img src="/logo.png" alt="HZ" className="w-full h-full object-cover" />
                 </div>
               </Link>
               <h1 className="text-2xl sm:text-3xl font-bold mb-2">

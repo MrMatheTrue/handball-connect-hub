@@ -13,12 +13,12 @@ const Dashboard = () => {
   const allMessages = getMessages();
   const allConversations = getConversations();
   const allOpportunities = getOpportunities();
-  
+
   // Filter messages for current user
-  const userMessages = currentUser 
+  const userMessages = currentUser
     ? allMessages.filter(m => m.senderId === currentUser.id || m.receiverId === currentUser.id)
     : [];
-  const unreadMessages = currentUser 
+  const unreadMessages = currentUser
     ? allMessages.filter(m => m.receiverId === currentUser.id && !m.read).length
     : 0;
 
@@ -48,10 +48,10 @@ const Dashboard = () => {
         ...baseItems,
       ];
     }
-    
+
     if (userType === 'coach') {
       return [
-        { icon: GraduationCap, label: "Meu Perfil", href: currentUser?.profileId ? `/jogador/${currentUser.profileId}` : "/criar-jogador", description: currentUser?.profileId ? "Visualizar e editar seu perfil" : "Criar seu perfil" },
+        { icon: GraduationCap, label: "Meu Perfil", href: currentUser?.profileId ? `/tecnico/${currentUser.profileId}` : "/criar-jogador", description: currentUser?.profileId ? "Visualizar e editar seu perfil" : "Criar seu perfil" },
         { icon: Briefcase, label: "Minhas Candidaturas", href: "/candidaturas", description: `${appliedOpportunities.length} vagas aplicadas` },
         ...baseItems,
       ];
@@ -65,7 +65,7 @@ const Dashboard = () => {
         ...baseItems,
       ];
     }
-    
+
     if (userType === 'agent') {
       return [
         { icon: Users, label: "Meu Perfil", href: currentUser?.profileId ? `/agente/${currentUser.profileId}` : "/criar-agente", description: currentUser?.profileId ? "Visualizar e editar seu perfil" : "Criar seu perfil" },
@@ -89,7 +89,7 @@ const Dashboard = () => {
         { icon: Star, label: "Seja Premium", href: "/premium", hidden: isPremium },
       ].filter(a => !a.hidden);
     }
-    
+
     if (userType === 'club') {
       return [
         { icon: Plus, label: "Publicar Vaga", href: "/publicar-vaga", premium: true },
@@ -97,7 +97,7 @@ const Dashboard = () => {
         { icon: Star, label: "Seja Premium", href: "/premium", hidden: isPremium },
       ].filter(a => !a.hidden);
     }
-    
+
     if (userType === 'agent') {
       return [
         { icon: Plus, label: "Publicar Vaga", href: "/publicar-vaga", premium: true },
@@ -106,7 +106,7 @@ const Dashboard = () => {
         { icon: Star, label: "Seja Premium", href: "/premium", hidden: isPremium },
       ].filter(a => !a.hidden);
     }
-    
+
     return [];
   };
 
@@ -206,8 +206,8 @@ const Dashboard = () => {
                   const isPremiumAction = 'premium' in action && action.premium;
                   return (
                     <Link key={index} to={action.href}>
-                      <Button 
-                        variant={isPremiumAction && !isPremium ? "outline" : "default"} 
+                      <Button
+                        variant={isPremiumAction && !isPremium ? "outline" : "default"}
                         className="gap-2"
                         disabled={isPremiumAction && !isPremium}
                       >

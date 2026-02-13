@@ -70,7 +70,7 @@ const NewsSection = () => {
           <div className="group glass-card rounded-2xl overflow-hidden card-hover lg:row-span-2">
             <div className="relative h-64 lg:h-80 bg-gradient-to-br from-primary/30 to-orange-light/20">
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="font-display text-6xl text-primary/50">HZ</span>
+                <img src="/logo.png" alt="HZ" className="w-32 h-32 object-contain opacity-50" />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
               <div className="absolute top-4 left-4">
@@ -111,7 +111,7 @@ const NewsSection = () => {
             >
               <div className="relative w-full sm:w-48 h-40 sm:h-auto bg-gradient-to-br from-primary/20 to-orange-light/10 flex-shrink-0">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-display text-4xl text-primary/40">HZ</span>
+                  <img src="/logo.png" alt="HZ" className="w-16 h-16 object-contain opacity-40" />
                 </div>
               </div>
               <div className="p-6 flex-1">
