@@ -192,9 +192,15 @@ const Cadastro = () => {
     }
 
     // Update user_type and terms acceptance on profile after signup
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    let attempts = 0;
+    let user = null;
+    while (attempts < 10 && !user) {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const { data } = await supabase.auth.getUser();
+      user = data.user;
+      attempts++;
+    }
 
-    const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       await supabase.from('profiles').update({
         user_type: userType,

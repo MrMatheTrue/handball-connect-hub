@@ -16,7 +16,7 @@ const OpportunityDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { currentUser, isPremium, userType } = useUser();
+  const { currentUser, isPremium, userType, isAdmin } = useUser();
 
   const opportunities = getOpportunities();
   const clubs = getClubs();
@@ -44,7 +44,8 @@ const OpportunityDetail = () => {
 
   const club = clubs.find(c => c.id === opportunity.clubId);
   const hasApplied = opportunity.applicantIds.includes(currentUser?.id || "");
-  const canApply = (userType === 'player' && opportunity.type === 'player') ||
+  const canApply = isAdmin ||
+    (userType === 'player' && opportunity.type === 'player') ||
     (userType === 'coach' && opportunity.type === 'coach');
   const daysAgo = Math.floor((new Date().getTime() - new Date(opportunity.createdAt).getTime()) / (1000 * 60 * 60 * 24));
 

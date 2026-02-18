@@ -26,7 +26,7 @@ const CONTRACT_TYPES = [
 const CreateOpportunity = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { currentUser, isPremium, userType } = useUser();
+  const { currentUser, isPremium, userType, isAdmin } = useUser();
 
   const canPublish = (userType === 'club' || userType === 'agent' || userType === 'coach') && isPremium;
 
@@ -128,7 +128,7 @@ const CreateOpportunity = () => {
   };
 
   // Show paywall for non-premium users or restricted roles
-  if (!isPremium || (userType !== 'club' && userType !== 'agent' && userType !== 'coach')) {
+  if (!isAdmin && (!isPremium || (userType !== 'club' && userType !== 'agent' && userType !== 'coach'))) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
