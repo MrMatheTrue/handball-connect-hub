@@ -762,8 +762,11 @@ const Cadastro = () => {
                     if (profileType) {
                       localStorage.setItem('hz_pending_profile_type', profileType);
                     }
-                    const result = await lovable.auth.signInWithOAuth("google", {
-                      redirect_uri: window.location.origin + '/cadastro',
+                    const result = await supabase.auth.signInWithOAuth({
+                      provider: "google",
+                      options: {
+                        redirectTo: window.location.origin + '/cadastro',
+                      }
                     });
 
                     if (result.error) {

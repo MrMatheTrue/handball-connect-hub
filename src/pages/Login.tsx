@@ -9,7 +9,7 @@ import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@/contexts/UserContext";
 import { toast } from "@/hooks/use-toast";
-import { lovable } from "@/integrations/lovable/index";
+import { supabase } from "@/integrations/supabase/client";
 
 const Login = () => {
   const { t } = useTranslation();
@@ -131,8 +131,11 @@ const Login = () => {
                 variant="outline"
                 className="w-full h-12 gap-3"
                 onClick={async () => {
-                  const result = await lovable.auth.signInWithOAuth("google", {
-                    redirect_uri: window.location.origin,
+                  const result = await supabase.auth.signInWithOAuth({
+                    provider: "google",
+                    options: {
+                      redirectTo: window.location.origin,
+                    }
                   });
 
                   if (result.error) {
