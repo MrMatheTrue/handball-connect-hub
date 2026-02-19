@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/UserContext";
-import PlayerSearchWidget from "@/components/dashboard/PlayerSearchWidget";
+import PlayerSearchWidget from "@/components/PlayerSearchWidget";
 import { getPlayers, getClubs, getAgents, getOpportunities, getMessages, getConversations } from "@/data/mockData";
 import { User, Building2, Users, Briefcase, MessageSquare, Settings, Crown, Edit, Eye, FileText, GraduationCap, Plus, ArrowRight, Clock, Star } from "lucide-react";
 
