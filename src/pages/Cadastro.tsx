@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { User, Building2, Users, Mail, Lock, Eye, EyeOff, ArrowRight, Check, GraduationCap, Plus, X, Upload, Loader2 } from "lucide-react";
+import { User, Building2, Users, Mail, Lock, Eye, EyeOff, ArrowRight, Check, GraduationCap, Plus, X, Upload, Loader2, Phone } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useUser } from "@/contexts/UserContext";
 import { POSITIONS, COUNTRIES, LEVELS, STATUSES, COACH_SPECIALIZATIONS } from "@/data/mockData";
@@ -32,6 +32,7 @@ const Cadastro = () => {
     name: "",
     email: "",
     password: "",
+    whatsapp: "",
   });
 
   // Player specific data
@@ -208,7 +209,15 @@ const Cadastro = () => {
         terms_accepted_at: new Date().toISOString(),
         privacy_accepted: true,
         data_sharing_consent: true,
+        phone: formData.whatsapp,
+        whatsapp: formData.whatsapp,
       } as any).eq('id', user.id);
+
+      if (userType === 'player') {
+        await supabase.rpc('activate_player_trial', { user_uuid: user.id });
+      } else {
+        await supabase.rpc('activate_non_player_premium', { user_uuid: user.id });
+      }
     }
 
     toast({
@@ -850,6 +859,23 @@ const Cadastro = () => {
                         {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
                     </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="whatsapp">WhatsApp *</Label>
+                    <div className="relative">
+                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                      <Input
+                        id="whatsapp"
+                        type="tel"
+                        placeholder="+55 (11) 99999-9999"
+                        className="pl-12 h-12 bg-secondary border-border"
+                        value={formData.whatsapp}
+                        onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                        required
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground">Usado para notificações de atletas compatíveis</p>
                   </div>
 
                   <div className="flex gap-3">

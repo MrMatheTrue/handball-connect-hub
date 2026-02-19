@@ -13,15 +13,15 @@ const Premium = () => {
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
 
   const pricing = {
-    monthly: { athlete: 25, coach: 50, club: 50, agent: 50 },
-    annual: { athlete: 12.99, coach: 38.99, club: 38.99, agent: 38.99 },
+    monthly: { athlete: 15, coach: 0, club: 0, agent: 0 },
+    annual: { athlete: 10, coach: 0, club: 0, agent: 0 },
   };
 
   const savingsPercent = {
-    athlete: Math.round((1 - 12.99 / 25) * 100),
-    coach: Math.round((1 - 38.99 / 50) * 100),
-    club: Math.round((1 - 38.99 / 50) * 100),
-    agent: Math.round((1 - 38.99 / 50) * 100),
+    athlete: Math.round((1 - 10 / 15) * 100),
+    coach: 0,
+    club: 0,
+    agent: 0,
   };
 
   const plans = [
@@ -68,8 +68,8 @@ const Premium = () => {
     },
     {
       name: "Premium Profissional",
-      price: `R$ ${billingPeriod === 'monthly' ? pricing.monthly.club.toFixed(2).replace('.', ',') : pricing.annual.club.toFixed(2).replace('.', ',')}`,
-      period: billingPeriod === 'monthly' ? '/mês' : '/mês (anual)',
+      price: "Gratuito",
+      period: "para sempre",
       description: "Para clubes, técnicos e agentes que buscam talentos",
       icon: Building2,
       savings: billingPeriod === 'annual' ? savingsPercent.club : 0,
@@ -211,26 +211,27 @@ const Premium = () => {
           </div>
 
           {/* Price Summary */}
-          <div className="glass-card rounded-2xl p-8 mb-16">
-            <h2 className="text-2xl font-bold text-center mb-8">{t("premium.summary")}</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { icon: User, label: "Atleta", monthly: pricing.monthly.athlete, annual: pricing.annual.athlete },
-                { icon: GraduationCap, label: "Técnico", monthly: pricing.monthly.coach, annual: pricing.annual.coach },
-                { icon: Building2, label: "Clube", monthly: pricing.monthly.club, annual: pricing.annual.club },
-                { icon: Users, label: "Agente", monthly: pricing.monthly.agent, annual: pricing.annual.agent },
-              ].map((item, i) => (
-                <div key={i} className="text-center p-6 rounded-xl bg-secondary/50">
-                  <item.icon className="w-10 h-10 text-primary mx-auto mb-3" />
-                  <h3 className="font-semibold mb-1">{item.label}</h3>
-                  <p className="text-2xl font-bold text-primary">
-                    R$ {(billingPeriod === 'monthly' ? item.monthly : item.annual).toFixed(2).replace('.', ',')}
-                  </p>
-                  <p className="text-sm text-muted-foreground">{billingPeriod === 'monthly' ? '/mês' : '/mês (anual)'}</p>
-                </div>
-              ))}
+          {(!currentUser || userType === 'player' || !userType) && (
+            <div className="glass-card rounded-2xl p-8 mb-16">
+              <h2 className="text-2xl font-bold text-center mb-8">{t("premium.summary")}</h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  { icon: User, label: "Atleta", monthly: pricing.monthly.athlete, annual: pricing.annual.athlete },
+                  { icon: GraduationCap, label: "Técnico", monthly: pricing.monthly.coach, annual: pricing.annual.coach },
+                  { icon: Building2, label: "Clube", monthly: pricing.monthly.club, annual: pricing.annual.club },
+                  { icon: Users, label: "Agente", monthly: pricing.monthly.agent, annual: pricing.annual.agent },
+                ].map((item, i) => (
+                  <div key={i} className="text-center p-6 rounded-xl bg-secondary/50">
+                    <item.icon className="w-10 h-10 text-primary mx-auto mb-3" />
+                    <h3 className="font-semibold mb-1">{item.label}</h3>
+                    <p className="text-2xl font-bold text-primary">
+                      R$ {(billingPeriod === 'monthly' ? item.monthly : item.annual).toFixed(2).replace('.', ',')}
+                    </p>
+                    <p className="text-sm text-muted-foreground">{billingPeriod === 'monthly' ? '/mês' : '/mês (anual)'}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
 
           {/* Features Section */}
           <div className="text-center max-w-3xl mx-auto mb-12">
