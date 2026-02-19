@@ -232,6 +232,7 @@ const Premium = () => {
                 ))}
               </div>
             </div>
+          )}
 
           {/* Features Section */}
           <div className="text-center max-w-3xl mx-auto mb-12">
