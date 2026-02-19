@@ -140,11 +140,11 @@ const Premium = () => {
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid md:grid-cols-3 gap-6 lg:gap-8 mb-24">
+          <div className={`grid gap-6 lg:gap-8 mb-24 ${!currentUser || (userType !== 'player' && userType !== 'coach' && userType !== 'club' && userType !== 'agent') ? 'md:grid-cols-3' : 'md:grid-cols-1 max-w-md mx-auto'}`}>
             {plans.filter(plan => {
-              if (userType && ['club', 'coach', 'agent'].includes(userType) && plan.price === "R$ 0") {
-                return false;
-              }
+              if (!currentUser) return true; // sem login: mostra todos
+              if (userType === 'player') return plan.name === 'Premium Atleta';
+              if (userType === 'coach' || userType === 'club' || userType === 'agent') return plan.name === 'Premium Profissional';
               return true;
             }).map((plan, index) => (
               <div

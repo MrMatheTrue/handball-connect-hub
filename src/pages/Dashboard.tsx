@@ -3,6 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/UserContext";
+import PlayerSearchWidget from "@/components/dashboard/PlayerSearchWidget";
 import { getPlayers, getClubs, getAgents, getOpportunities, getMessages, getConversations } from "@/data/mockData";
 import { User, Building2, Users, Briefcase, MessageSquare, Settings, Crown, Edit, Eye, FileText, GraduationCap, Plus, ArrowRight, Clock, Star } from "lucide-react";
 
@@ -51,7 +52,7 @@ const Dashboard = () => {
 
     if (userType === 'coach') {
       return [
-        { icon: GraduationCap, label: "Meu Perfil", href: currentUser?.profileId ? `/tecnico/${currentUser.profileId}` : "/criar-jogador", description: currentUser?.profileId ? "Visualizar e editar seu perfil" : "Criar seu perfil" },
+        { icon: GraduationCap, label: "Meu Perfil", href: `/tecnico/${currentUser?.id}`, description: "Visualizar e editar seu perfil" },
         { icon: Briefcase, label: "Minhas Candidaturas", href: "/candidaturas", description: `${appliedOpportunities.length} vagas aplicadas` },
         ...baseItems,
       ];
@@ -82,29 +83,37 @@ const Dashboard = () => {
   };
 
   const getQuickActions = () => {
-    if (userType === 'player' || userType === 'coach') {
+    if (userType === 'player') {
       return [
-        { icon: Edit, label: currentUser?.profileId ? "Editar Perfil" : "Criar Perfil", href: currentUser?.profileId ? `/jogador/${currentUser.profileId}` : "/criar-jogador" },
+        { icon: Edit, label: "Editar Perfil", href: `/jogador/${currentUser?.id}` },
         { icon: Briefcase, label: "Ver Vagas", href: "/oportunidades" },
-        { icon: Star, label: "Seja Premium", href: "/premium", hidden: isPremium },
-      ].filter(a => !a.hidden);
+        ...(!isPremium ? [{ icon: Star, label: "Seja Premium Atleta", href: "/premium" }] : []),
+      ];
+    }
+
+    if (userType === 'coach') {
+      return [
+        { icon: Edit, label: "Editar Perfil", href: `/tecnico/${currentUser?.id}` },
+        { icon: Briefcase, label: "Ver Vagas", href: "/oportunidades" },
+        ...(!isPremium ? [{ icon: Star, label: "Seja Premium", href: "/premium" }] : []),
+      ];
     }
 
     if (userType === 'club') {
       return [
-        { icon: Plus, label: "Publicar Vaga", href: "/publicar-vaga", premium: true },
+        { icon: Plus, label: "Publicar Vaga", href: isPremium ? "/publicar-vaga" : "/premium", premium: !isPremium },
         { icon: Users, label: "Buscar Jogadores", href: "/jogadores" },
-        { icon: Star, label: "Seja Premium", href: "/premium", hidden: isPremium },
-      ].filter(a => !a.hidden);
+        ...(!isPremium ? [{ icon: Star, label: "Seja Premium Profissional", href: "/premium" }] : []),
+      ];
     }
 
     if (userType === 'agent') {
       return [
-        { icon: Plus, label: "Publicar Vaga", href: "/publicar-vaga", premium: true },
+        { icon: Plus, label: "Publicar Vaga", href: isPremium ? "/publicar-vaga" : "/premium", premium: !isPremium },
         { icon: Users, label: "Buscar Jogadores", href: "/jogadores" },
         { icon: Building2, label: "Buscar Clubes", href: "/clubes" },
-        { icon: Star, label: "Seja Premium", href: "/premium", hidden: isPremium },
-      ].filter(a => !a.hidden);
+        ...(!isPremium ? [{ icon: Star, label: "Seja Premium Profissional", href: "/premium" }] : []),
+      ];
     }
 
     return [];
@@ -197,6 +206,11 @@ const Dashboard = () => {
             </div>
           </div>
 
+          {/* Widget IA — apenas para clube, agente e técnico */}
+          {(userType === 'club' || userType === 'agent' || userType === 'coach') && (
+            <PlayerSearchWidget />
+          )}
+
           {/* Quick Actions */}
           {getQuickActions().length > 0 && (
             <div className="mb-8">
@@ -227,7 +241,7 @@ const Dashboard = () => {
             <h2 className="text-lg font-semibold mb-4">Menu</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {getMenuItems().map((item, index) => (
-                <Link key={index} to={item.href} className="block">
+                <Link key={index} to={'premium' in item && item.premium && !isPremium ? "/premium" : item.href} className="block">
                   <div className="glass-card rounded-2xl p-6 card-hover h-full">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0 relative">
