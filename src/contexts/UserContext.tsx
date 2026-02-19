@@ -21,6 +21,7 @@ interface UserContextType {
   userType: UserType;
   isLoggedIn: boolean;
   loading: boolean;
+  needsProfileSetup: boolean;
   login: (email: string, password: string) => Promise<{ error?: string }>;
   signup: (email: string, password: string, fullName: string, userType: UserType) => Promise<{ error?: string }>;
   logout: () => Promise<void>;
@@ -36,6 +37,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [needsProfileSetup, setNeedsProfileSetup] = useState(false);
 
   const fetchUserProfile = async (user: User) => {
     // Fetch profile
@@ -63,6 +65,25 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       await supabase.from('profiles').update({ user_type: pendingType } as any).eq('id', user.id);
       currentUserType = pendingType;
       localStorage.removeItem('hz_pending_profile_type');
+    }
+
+    // Detectar primeiro acesso Google sem user_type definido
+    const isGoogleUser = user.app_metadata?.provider === 'google';
+    const hasNoType = !currentUserType || currentUserType === null;
+
+    if (isGoogleUser && hasNoType && !pendingType) {
+      // Criar perfil básico se não existir
+      if (!profile) {
+        await supabase.from('profiles').upsert({
+          id: user.id,
+          full_name: user.user_metadata?.full_name || '',
+          email: user.email || '',
+          user_type: 'player',
+        } as any);
+      }
+      setNeedsProfileSetup(true);
+    } else {
+      setNeedsProfileSetup(false);
     }
 
     const newUser: CurrentUser = {
@@ -161,6 +182,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         userType: currentUser?.type ?? null,
         isLoggedIn: !!currentUser,
         loading,
+        needsProfileSetup,
         login,
         signup,
         logout,
