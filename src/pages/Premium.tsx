@@ -9,7 +9,7 @@ import { useState } from "react";
 
 const Premium = () => {
   const { t } = useTranslation();
-  const { isPremium, userType } = useUser();
+  const { isPremium, userType, currentUser } = useUser();
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
 
   const pricing = {
