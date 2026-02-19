@@ -118,7 +118,7 @@ Retorne apenas o JSON, sem texto adicional.`,
             .select(`
         id, user_id, position, nationality, height, weight,
         availability_status, current_club, experience_years,
-        profiles!inner(full_name, avatar_url)
+        profiles(full_name, avatar_url)
       `)
             .limit(20);
 
