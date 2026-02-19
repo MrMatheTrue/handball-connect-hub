@@ -4,6 +4,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserProvider } from "./contexts/UserContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "./contexts/UserContext";
 
 import Index from "./pages/Index";
 import Jogadores from "./pages/Jogadores";
@@ -42,6 +45,19 @@ import Privacidade from "./pages/Privacidade";
 
 const queryClient = new QueryClient();
 
+const AuthRedirect = () => {
+  const { needsProfileSetup, isLoggedIn, loading } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && isLoggedIn && needsProfileSetup) {
+      navigate("/cadastro?google=true");
+    }
+  }, [needsProfileSetup, isLoggedIn, loading]);
+
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <UserProvider>
@@ -49,6 +65,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <AuthRedirect />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/jogadores" element={<Jogadores />} />
